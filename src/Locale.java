@@ -42,6 +42,13 @@ public class Locale {
         this.hasItem = hasItem;
     }
 
+    public Item getWhichItem() {
+        return whichItem;
+    }
+    public void setWhichItem(Item whichItem) {
+        this.whichItem = whichItem;
+    }
+
     // Other methods
     public String toString() {
         return "[Locale object: id=" + this.id + " name="+ this.name + " desc=" + this.desc + "]";
@@ -56,4 +63,5 @@ public class Locale {
     private String  desc;
     private boolean hasVisited = false;
     private boolean hasItem = false;
+    private Item whichItem;
 }

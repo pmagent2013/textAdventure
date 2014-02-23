@@ -12,6 +12,9 @@ public class Game {
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
     public static int score = 5;                    // Tracker of the player's score.
+    public static Item[] items;
+    public static Item[] inventory;
+    public static int inventoryCounter = 0;
 
     public static void main(String[] args) {
         if (DEBUGGING) {
@@ -24,7 +27,7 @@ public class Game {
 
         // Set starting locale, if it was provided as a command line parameter.
         if (args.length > 0) {
-            int startLocation = Integer.parseInt(args[0]);    // TODO We need to catch a possible exception here.
+            int startLocation = Integer.parseInt(args[0]);
             // Check that the passed-in value for startLocation is within the range of actual locations.
             if ( startLocation >= 0 && startLocation <= MAX_LOCALES) {
                 currentLocale = startLocation;
@@ -34,6 +37,7 @@ public class Game {
         // Get the game started.
         init();
         updateDisplay();
+
 
         // Game Loop
         while (stillPlaying) {
@@ -50,13 +54,40 @@ public class Game {
     private static void init() {
         // Initialize any uninitialized globals.
         command = new String();
-        stillPlaying = true;   // TODO: Do we need this?
+        stillPlaying = true;
+
+        // Set up the item instances of the Item class.
+        Item item0 = new Item(0);
+        item0.setName("map");
+        item0.setDesc("You have picked up a map");
+
+        Item item1 = new Item(1);
+        item1.setName("intel");
+        item1.setDesc("You have picked up enemy intelligence");
+
+        Item item2 = new Item(2);
+        item2.setName("gun");
+        item2.setDesc("You have picked up an assault rifle");
+
+        Item item3 = new Item(3);
+        item3.setName("allies");
+        item3.setDesc("You have gained allies");
+
+        items = new Item[4]; //array of all items in game
+        items[0] = item0; //map
+        items[1] = item1; //intel
+        items[2] = item2; //gun
+        items[3] = item3; //allies
+
+        inventory = new Item[4]; //creates the array to store items when the player picks them up
 
         // Set up the location instances of the Locale class.
         Locale loc0 = new Locale(0);
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
         loc0.setHasItem(true);
+        loc0.setHasItem(true);
+        loc0.setWhichItem(items[1]);
 
         Locale loc1 = new Locale(1);
         loc1.setName("Offworld");
@@ -66,6 +97,8 @@ public class Game {
         loc2.setName("Village");
         loc2.setDesc("You are in a village");
         loc2.setHasItem(true);
+        loc2.setHasItem(true);
+        loc2.setWhichItem(items[3]);
 
         Locale loc3 = new Locale(3);
         loc3.setName("Carter Office");
@@ -76,11 +109,14 @@ public class Game {
         loc4.setDesc("You are in the gateroom");
         loc4.setHasVisited(true);
         loc4.setHasItem(true);
+        loc4.setWhichItem(items[0]);
 
         Locale loc5 = new Locale(5);
         loc5.setName("Armory");
         loc5.setDesc("You are in the armory");
         loc5.setHasItem(true);
+        loc5.setHasItem(true);
+        loc5.setWhichItem(items[2]);
 
         Locale loc6 = new Locale(6);
         loc6.setName("Ronan Quarter");
@@ -107,26 +143,6 @@ public class Game {
         locations[7] = loc7; // "McKay Lab"
         locations[8] = loc8; // "Cafe"
 
-        // Set up the location instances of the Item class.
-        Item item0 = new Item(0);
-        item0.setName("map");
-        item0.setDesc("You have picked up a map");
-
-        Item item1 = new Item(1);
-        item1.setName("intel");
-        item1.setDesc("You have picked up enemy intelligence");
-
-        Item item2 = new Item(2);
-        item2.setName("gun");
-        item2.setDesc("You have picked up an assault rifle");
-
-        Item item3 = new Item(3);
-        item3.setName("allies");
-        item3.setDesc("You have gained allies");
-
-
-
-
         if (DEBUGGING) {
             System.out.println("All game locations:");
             for (int i = 0; i < locations.length; ++i) {
@@ -152,6 +168,20 @@ public class Game {
     private static void updateDisplay() {
         //System.out.println(locations[currentLocale].getName());
         System.out.println(locations[currentLocale].getDesc());
+        System.out.print("From here the directions you can move are: ");
+        if(nav[currentLocale][0]!=-1){
+            System.out.print("North ");
+        }
+        if(nav[currentLocale][1]!=-1){
+            System.out.print("South ");
+        }
+        if(nav[currentLocale][2]!=-1){
+            System.out.print("East ");
+        }
+        if(nav[currentLocale][3]!=-1){
+            System.out.print("West ");
+        }
+        System.out.println();
     }
 
     private static void getCommand() {
@@ -175,6 +205,8 @@ public class Game {
 
         } else if ( command.equalsIgnoreCase("pick")  || command.equalsIgnoreCase("pickup") || command.equalsIgnoreCase("p")) {
            pickup();
+        } else if ( command.equalsIgnoreCase("inventory")  || command.equalsIgnoreCase("i") ) {
+            showInventory();
         } else if ( command.equalsIgnoreCase("quit")  || command.equalsIgnoreCase("q")) {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
@@ -203,13 +235,35 @@ public class Game {
         System.out.println("   w/west");
         System.out.println("   e/east");
         System.out.println("   p/pickup");
+        System.out.println("   i/inventory");
         System.out.println("   q/quit");
     }
 
     private static void pickup() {
+
+
         if(locations[currentLocale].getHasItem() == true){
+            inventory[inventoryCounter] = locations[currentLocale].getWhichItem();
+            System.out.println("You have picked up a " + inventory[inventoryCounter].getName());
+            locations[currentLocale].setHasItem(false);
+            inventoryCounter++;
+        }
+        else{
+            System.out.println("There is no item here to pickup.");
 
         }
+    }
+
+    private static void showInventory() {
+        int i=0;
+        System.out.print("You currently have ");
+        while(inventory[i]!=null){
+            System.out.print(inventory[i].getName()+ ", ");
+            i++;
+        }
+        System.out.print("in your inventory.");
+        System.out.println();
+
     }
 
     private static void quit() {
