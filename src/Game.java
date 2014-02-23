@@ -12,8 +12,8 @@ public class Game {
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
     public static int score = 5;                    // Tracker of the player's score.
-    public static Item[] items;
-    public static Item[] inventory;
+    public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
+    public static Item[] inventory;                 // An array of Items that stores the players items they pickup
     public static int inventoryCounter = 0;
 
     public static void main(String[] args) {
@@ -59,21 +59,22 @@ public class Game {
         // Set up the item instances of the Item class.
         Item item0 = new Item(0);
         item0.setName("map");
-        item0.setDesc("You have picked up a map");
+        item0.setDesc("There is a map available for pickup.");
 
         Item item1 = new Item(1);
         item1.setName("intel");
-        item1.setDesc("You have picked up enemy intelligence");
+        item1.setDesc("There is enemy intelligence available for pickup.");
 
         Item item2 = new Item(2);
         item2.setName("gun");
-        item2.setDesc("You have picked up an assault rifle");
+        item2.setDesc("There is an assault rifle available for pickup.");
 
         Item item3 = new Item(3);
         item3.setName("allies");
-        item3.setDesc("You have gained allies");
+        item3.setDesc("There are allies available for pickup.");
 
-        items = new Item[4]; //array of all items in game
+        //array of all items in game
+        items = new Item[4];
         items[0] = item0; //map
         items[1] = item1; //intel
         items[2] = item2; //gun
@@ -167,7 +168,13 @@ public class Game {
 
     private static void updateDisplay() {
         //System.out.println(locations[currentLocale].getName());
-        System.out.println(locations[currentLocale].getDesc());
+        if(locations[currentLocale].getHasItem() == true)
+        {
+            System.out.println(locations[currentLocale].getDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
+        }
+        else{
+            System.out.println(locations[currentLocale].getDesc());
+        }
         System.out.print("From here the directions you can move are: ");
         if(nav[currentLocale][0]!=-1){
             System.out.print("North ");
@@ -185,7 +192,7 @@ public class Game {
     }
 
     private static void getCommand() {
-        System.out.print("[" + moves + " moves, score: " + score + " achievement ratio: "+ score/moves +"] ");
+        System.out.print("[Current progress: " + moves + " moves, score: " + score + " achievement ratio: "+ score/moves +"] ");
         Scanner inputReader = new Scanner(System.in);
         command = inputReader.nextLine();  // command is global.
     }
@@ -211,6 +218,8 @@ public class Game {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
             help();
+        } else{
+            System.out.println("That is an invalid command. Type help to see a list of commands.");
         };
 
         if (dir > -1) {   // This means a dir was set.
@@ -228,6 +237,7 @@ public class Game {
         }
     }
 
+    //displays the available actions to the player
     private static void help() {
         System.out.println("The commands are as follows:");
         System.out.println("   n/north");
@@ -239,9 +249,8 @@ public class Game {
         System.out.println("   q/quit");
     }
 
+    //allows the user to pickup items
     private static void pickup() {
-
-
         if(locations[currentLocale].getHasItem() == true){
             inventory[inventoryCounter] = locations[currentLocale].getWhichItem();
             System.out.println("You have picked up a " + inventory[inventoryCounter].getName());
