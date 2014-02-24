@@ -14,7 +14,8 @@ public class Game {
     public static int score = 5;                    // Tracker of the player's score.
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
-    public static int inventoryCounter = 0;
+    public static int inventoryCounter = 0;         //keeps track of # of items in inventory
+
 
     public static void main(String[] args) {
         if (DEBUGGING) {
@@ -211,9 +212,11 @@ public class Game {
             dir = 3;
 
         } else if ( command.equalsIgnoreCase("pick")  || command.equalsIgnoreCase("pickup") || command.equalsIgnoreCase("p")) {
-           pickup();
+            pickup();
         } else if ( command.equalsIgnoreCase("inventory")  || command.equalsIgnoreCase("i") ) {
             showInventory();
+        } else if ( command.equalsIgnoreCase("map")  || command.equalsIgnoreCase("m") ) {
+            showMap();
         } else if ( command.equalsIgnoreCase("quit")  || command.equalsIgnoreCase("q")) {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
@@ -273,6 +276,129 @@ public class Game {
         System.out.print("in your inventory.");
         System.out.println();
 
+    }
+
+    private static void showMap() {
+        boolean hasMap = false;
+        for(int i=0; i<inventoryCounter; i++){
+            if(inventory[i].getName() == "map"){
+                hasMap = true;
+            }
+        }
+
+        if(hasMap == true){
+            if(currentLocale == 0){
+                System.out.println(" _____________________________");
+                System.out.println("|    *    |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|         |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+            if(currentLocale == 1){
+                System.out.println(" _____________________________");
+                System.out.println("|         |    *    |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|         |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+            if(currentLocale == 2){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |    *    |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+            if(currentLocale == 3){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|         |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|____*____|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+            if(currentLocale == 4){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+            if(currentLocale == 5){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|         |    *    |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+            if(currentLocale == 6){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|         |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|____*____|_________|_________|");
+            }
+            if(currentLocale == 7){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|____*____|_________|");
+            }
+            if(currentLocale == 8){
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("| Office  |Gateroom | Armory  |");
+                System.out.println("|_________|_________|_________|");
+                System.out.println("|Ronan/'s |McKay/'s |    *    |");
+                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|_________|_________|_________|");
+            }
+        }
+        else {
+            System.out.println("You do not have the map.");
+        }
     }
 
     private static void quit() {
