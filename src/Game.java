@@ -165,6 +165,7 @@ public class Game {
          /* nav[2] for loc 8 */  {  5, -1, -1,  7 },
 
         };
+        createMagicItems();
     }
 
     private static void updateDisplay() {
@@ -239,6 +240,39 @@ public class Game {
             }
         }
     }
+
+    private static void createMagicItems() {
+        // Create the list manager for our magic items.
+        MagicItemsList magicItems  = new MagicItemsList();
+        magicItems.setName("List of Magic Items");
+        magicItems.setDesc("These are the magic items for purchase.");
+        magicItems.setHead(null);
+
+        // Create some magic items and put them in the list.
+        ListItem item1 = new ListItem();
+        item1.setName("Wraith Stunner");
+        item1.setDesc("Gun that stuns target");
+        item1.setCost(10.00);
+
+        ListItem item2 = new ListItem();
+        item2.setName("ZPM");
+        item2.setDesc("An ancient power source that extracts vacuum energy from an artificial region of subspace-time until it reaches maximum entropy");
+        item2.setCost(200.00);
+
+        ListItem item3 = new ListItem();
+        item3.setName("Ancient Personal Shield");
+        item3.setDesc("An ancient device that protects the wearer from harm");
+        item3.setCost(50.00);
+
+        // Link it all up.
+        magicItems.setHead(item1);
+        item1.setNext(item2);
+        item2.setNext(item3);
+        item3.setNext(null);
+
+        System.out.println(magicItems.toString());
+    }
+
 
     //displays the available actions to the player
     private static void help() {
