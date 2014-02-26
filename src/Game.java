@@ -1,3 +1,5 @@
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -8,14 +10,19 @@ public class Game {
     public static int currentLocale = 4;            // Player starts in locale 0.
     public static String command;                   // What the player types as he or she plays the game.
     public static boolean stillPlaying = true;      // Controls the game loop.
+    public static boolean moved = false;            // Determines whether or not to print game information
+    public static boolean buying = false;           // Determines if the player is trying to buy an item
     public static Locale[] locations;               // An uninitialized array of type Locale. See init() for initialization.
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
     public static int score = 5;                    // Tracker of the player's score.
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
-    public static int inventoryCounter = 0;         //keeps track of # of items in inventory
-
+    public static ArrayList<ListItem> magicItemsInventory = new ArrayList<ListItem>();
+    public static int inventoryCounter = 0;         // keeps track of # of items in inventory
+    public static int coins = 100;                  // keeps track of coins used to buy items in magick shoppe
+    public static int cheaterCounter = 0;           //used in case the player decides to mine for coins for too long
+    public static MagicItemsList magicItems  = new MagicItemsList();
 
     public static void main(String[] args) {
         if (DEBUGGING) {
@@ -44,7 +51,10 @@ public class Game {
         while (stillPlaying) {
             getCommand();
             navigate();
-            updateDisplay();
+            if(moved == true){
+                updateDisplay();
+            }
+            moved = false;
         }
 
         // We're done. Thank the player and exit.
@@ -83,6 +93,7 @@ public class Game {
 
         inventory = new Item[4]; //creates the array to store items when the player picks them up
 
+
         // Set up the location instances of the Locale class.
         Locale loc0 = new Locale(0);
         loc0.setName("Enemy Base");
@@ -104,11 +115,12 @@ public class Game {
 
         Locale loc3 = new Locale(3);
         loc3.setName("Carter Office");
-        loc3.setDesc("Colonel Carter\'s Office.");
+        loc3.setDesc("You are in Colonel Carter\'s Office.");
 
         Locale loc4 = new Locale(4);
         loc4.setName("Gateroom");
         loc4.setDesc("You are in the gateroom");
+        loc4.setLookDesc("You see a stargate in front of you.");
         loc4.setHasVisited(true);
         loc4.setHasItem(true);
         loc4.setWhichItem(items[0]);
@@ -127,10 +139,14 @@ public class Game {
         Locale loc7 = new Locale(7);
         loc7.setName("McKay Lab");
         loc7.setDesc("You are in Dr. Mckay\'s Lab");
+        loc7.setLookDesc("You have entered Dr. Rodney Mckay's Laboratory. You look around and see rows of computer hardware\n" +
+                        "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a lsarge\n" +
+                        "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.");
 
-        Locale loc8 = new Locale(8);
+        MagickItemShoppe loc8 = new MagickItemShoppe(8);
         loc8.setName("Cafe");
         loc8.setDesc("You are in the cafe");
+
 
 
         // Set up the location array.
@@ -165,12 +181,52 @@ public class Game {
          /* nav[2] for loc 8 */  {  5, -1, -1,  7 },
 
         };
-        createMagicItems();
+
+    }
+
+    private static void createMagicItems() {
+        // Create the list manager for our magic items.
+        magicItems.setName("List of Magic Items");
+        magicItems.setDesc("These are the magic items for purchase.");
+
+
+        // Create some magic items and put them in the list.
+        ListItem item1 = new ListItem();
+        item1.setName("Wraith Stunner");
+        item1.setDesc("Gun that stuns target");
+        item1.setCost(10);
+
+        ListItem item2 = new ListItem();
+        item2.setName("ZPM");
+        item2.setDesc("An ancient power source that extracts vacuum energy from an artificial region of subspace-time until it reaches maximum entropy");
+        item2.setCost(200);
+
+        ListItem item3 = new ListItem();
+        item3.setName("Ancient Personal Shield");
+        item3.setDesc("An ancient device that protects the wearer from harm");
+        item3.setCost(50);
+
+        // Link it all up.
+        magicItems.setHead(item1);
+        item1.setNext(item2);
+        item2.setNext(item3);
+        item3.setNext(null);
+
+        System.out.println(magicItems.Shop());
+
+
     }
 
     private static void updateDisplay() {
         //System.out.println(locations[currentLocale].getName());
-        if(locations[currentLocale].getHasItem() == true)
+
+        if(locations[currentLocale].getHasItem() == true && locations[currentLocale].getHasVisited() == false){
+            System.out.println(locations[currentLocale].getLookDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
+        }
+        else if(locations[currentLocale].getHasVisited() == false){
+            System.out.println(locations[currentLocale].getLookDesc());
+        }
+        else if(locations[currentLocale].getHasItem() == true)
         {
             System.out.println(locations[currentLocale].getDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
         }
@@ -191,10 +247,17 @@ public class Game {
             System.out.print("West ");
         }
         System.out.println();
+        System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + score / moves + ", coins: " + coins + "] ");
+        System.out.println();
+        buying = false;
+        //gives the player 5 points the first time they visit a location
+        if(locations[currentLocale].getHasVisited() == false){
+            score+=5;
+            locations[currentLocale].setHasVisited(true);
+        }
     }
 
-    private static void getCommand() {
-        System.out.print("[Current progress: " + moves + " moves, score: " + score + " achievement ratio: "+ score/moves +"] ");
+    private static void getCommand(){
         Scanner inputReader = new Scanner(System.in);
         command = inputReader.nextLine();  // command is global.
     }
@@ -218,10 +281,16 @@ public class Game {
             showInventory();
         } else if ( command.equalsIgnoreCase("map")  || command.equalsIgnoreCase("m") ) {
             showMap();
+        } else if ( command.equalsIgnoreCase("buy")  || command.equalsIgnoreCase("b") ) {
+            buyItems();
+        } else if ( command.equalsIgnoreCase("look")  || command.equalsIgnoreCase("l") ) {
+            look();
         } else if ( command.equalsIgnoreCase("quit")  || command.equalsIgnoreCase("q")) {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
             help();
+        } else if ( currentLocale == 7 && buying == true) {
+            shop();
         } else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
         };
@@ -233,46 +302,39 @@ public class Game {
             } else {
                 currentLocale = newLocation;
                 moves = moves + 1;
-                if(locations[currentLocale].getHasVisited() == false){
-                    score+=5;
-                    locations[currentLocale].setHasVisited(true);
-                }
+                moved=true;
+
             }
         }
     }
 
-    private static void createMagicItems() {
-        // Create the list manager for our magic items.
-        MagicItemsList magicItems  = new MagicItemsList();
-        magicItems.setName("List of Magic Items");
-        magicItems.setDesc("These are the magic items for purchase.");
-        magicItems.setHead(null);
+    private static void shop() {
 
-        // Create some magic items and put them in the list.
-        ListItem item1 = new ListItem();
-        item1.setName("Wraith Stunner");
-        item1.setDesc("Gun that stuns target");
-        item1.setCost(10.00);
+        ListItem currentItem = magicItems.getHead();
+        Boolean boughtSomething = false;
+        while (currentItem != null) {
+            if(command.equalsIgnoreCase(currentItem.getName())){
+                if(coins >= currentItem.getCost()){
+                    System.out.println("You have purchased a " + currentItem.getName());
+                    System.out.println("Thank you for testing out Dr. McKays's Prototype Magick Shoppe. Please come again. ");
+                    coins-=currentItem.getCost();
+                    boughtSomething = true;
+                    magicItemsInventory.add(currentItem);
+                }
+                else{
+                    System.out.println("McKay set the price too high, you don't have enough coins to afford this item.");
+                    boughtSomething = true;
+                }
 
-        ListItem item2 = new ListItem();
-        item2.setName("ZPM");
-        item2.setDesc("An ancient power source that extracts vacuum energy from an artificial region of subspace-time until it reaches maximum entropy");
-        item2.setCost(200.00);
+            }
 
-        ListItem item3 = new ListItem();
-        item3.setName("Ancient Personal Shield");
-        item3.setDesc("An ancient device that protects the wearer from harm");
-        item3.setCost(50.00);
-
-        // Link it all up.
-        magicItems.setHead(item1);
-        item1.setNext(item2);
-        item2.setNext(item3);
-        item3.setNext(null);
-
-        System.out.println(magicItems.toString());
+            currentItem = currentItem.getNext();
+        }
+        buying = false;
+        if(boughtSomething == false){
+            System.out.println("That is not an item McKay has stocked the machine with. ");
+        }
     }
-
 
     //displays the available actions to the player
     private static void help() {
@@ -281,8 +343,11 @@ public class Game {
         System.out.println("   s/south");
         System.out.println("   w/west");
         System.out.println("   e/east");
+        System.out.println("   l/look");
         System.out.println("   p/pickup");
         System.out.println("   i/inventory");
+        System.out.println("   m/map");
+        System.out.println("   b/buy");
         System.out.println("   q/quit");
     }
 
@@ -291,12 +356,25 @@ public class Game {
         if(locations[currentLocale].getHasItem() == true){
             inventory[inventoryCounter] = locations[currentLocale].getWhichItem();
             System.out.println("You have picked up a " + inventory[inventoryCounter].getName());
+            System.out.println("You also found 25 coins.");
+            coins+=25;
             locations[currentLocale].setHasItem(false);
             inventoryCounter++;
         }
         else{
             System.out.println("There is no item here to pickup.");
-
+            System.out.println("But you found 5 coins.");
+            coins+=5;
+            cheaterCounter++;
+            if(cheaterCounter >= 25){
+                System.out.println("You think you're smart, think you found a way to cheat the system and get a shit load of coins? ");
+                System.out.println("Well guess what");
+                System.out.println("An ascended ancient has appeared and chastises you for being greedy. ");
+                System.out.println("As punishment you lose all your coins. ");
+                System.out.println("And Ronan punches you in the face. ");
+                coins = 0;
+                cheaterCounter = 0;
+            }
         }
     }
 
@@ -307,9 +385,30 @@ public class Game {
             System.out.print(inventory[i].getName()+ ", ");
             i++;
         }
+        for(ListItem item: magicItemsInventory){
+            System.out.print(item.getName() + ", ");
+        }
+
         System.out.print("in your inventory.");
         System.out.println();
 
+    }
+
+    private static void buyItems() {
+        if(currentLocale == 7){
+            System.out.println("Welcome to the Magick Shoppe protoype created by Dr. Rodney McKay");
+            System.out.println("These are the items available for purchase: ");
+            createMagicItems();
+            System.out.println("What would you like to buy?");
+            buying = true;
+        }
+        else{
+            System.out.println("Go to McKay's Lab to purchase items.");
+        }
+    }
+
+    private static void look() {
+        System.out.println(locations[currentLocale].getLookDesc());
     }
 
     private static void showMap() {

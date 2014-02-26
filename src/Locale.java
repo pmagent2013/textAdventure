@@ -28,6 +28,13 @@ public class Locale {
         this.desc = value;
     }
 
+    public String getLookDesc() {
+        return this.lookDesc;
+    }
+    public void setLookDesc(String value) {
+        this.lookDesc = value;
+    }
+
     public boolean getHasVisited() {
         return hasVisited;
     }
@@ -61,6 +68,7 @@ public class Locale {
     private int     id;
     private String  name;
     private String  desc;
+    private String lookDesc; //an extended description to be displayed on first visit or upon typing look
     private boolean hasVisited = false;
     private boolean hasItem = false;
     private Item whichItem;

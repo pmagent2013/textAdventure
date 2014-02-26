@@ -43,6 +43,18 @@ public class MagicItemsList {
         return retVal;
     }
 
+    public String Shop() {
+        String retVal = new String();
+        ListItem currentItem = this.head;
+        while (currentItem != null) {
+            retVal = retVal + "   " + currentItem.purchaseMenu() + "\n";
+            currentItem = currentItem.getNext();
+        }
+        return retVal;
+    }
+
+
+
 
     //
     // Private

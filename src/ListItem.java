@@ -29,16 +29,20 @@ public class ListItem {
     public void setNext(ListItem next) {
         this.next = next;
     }
-    public Double getCost() {
+    public int getCost() {
         return cost;
     }
-    public void setCost(Double cost) {
+    public void setCost(int cost) {
         this.cost = cost;
     }
     // Other methods
     @Override
     public String toString() {
-        return " name=" + this.name + " desc=" + this.desc;
+        return " name=" + this.name + " desc=" + this.desc + " cost=" + this.cost;
+    }
+
+    public String purchaseMenu() {
+        return this.name + " Cost: " + this.cost + " coins";
     }
 
 
@@ -48,7 +52,7 @@ public class ListItem {
 
     private String name;
     private String desc;
-    private Double cost;
+    private int cost;
     private ListItem next = null;
 
 }
