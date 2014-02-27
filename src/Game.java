@@ -86,18 +86,23 @@ public class Game {
         item3.setName("allies");
         item3.setDesc("There are allies available for pickup.");
 
+        Item item4 = new Item(4);
+        item4.setName("blue jello");
+        item4.setDesc("There is blue jello available for pickup.");
+
         //array of all items in game
-        items = new Item[4];
+        items = new Item[5];
         items[0] = item0; //map
         items[1] = item1; //intel
         items[2] = item2; //gun
         items[3] = item3; //allies
+        items[4] = item4; //blue jello
 
-        inventory = new Item[4]; //creates the array to store items when the player picks them up
+        inventory = new Item[5]; //creates the array to store items when the player picks them up
 
 
         // Set up the location instances of the Locale class.
-        Locale loc0 = new Locale(0);
+        OffWorld loc0 = new OffWorld(0);
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
         loc0.setLookDesc("You have entered the Wraith's base. There are hundreds of Wraith soldiers in front of you.\n" +
@@ -105,13 +110,17 @@ public class Game {
         loc0.setHasItem(true);
         loc0.setHasItem(true);
         loc0.setWhichItem(items[1]);
+        loc0.setInhabitants("Wraith");
+        loc0.setNumberOfInhabitants(200);
 
-        Locale loc1 = new Locale(1);
+        OffWorld loc1 = new OffWorld(1);
         loc1.setName("Offworld");
         loc1.setDesc("You are offworld");
         loc1.setLookDesc("You gate to a barren world. You can gate east to a allied planet, west to the Wraith planet, or south back to Atlantis.");
+        loc1.setInhabitants("None");
+        loc1.setNumberOfInhabitants(0);
 
-        Locale loc2 = new Locale(2);
+        OffWorld loc2 = new OffWorld(2);
         loc2.setName("Village");
         loc2.setDesc("You are in a village");
         loc2.setHasItem(true);
@@ -120,6 +129,8 @@ public class Game {
         loc2.setLookDesc("You have gated to a friendly planet. The Athosians camp is in front of you. \n" +
                         " The camp is in the middle of a dense forest, it night here. The only light you see comes from the village. \n" +
                         "You will need to have some of them join you before you can attack the Wraith planet.");
+        loc2.setInhabitants("Athosians");
+        loc2.setNumberOfInhabitants(250);
 
         Locale loc3 = new Locale(3);
         loc3.setName("Carter Office");
@@ -162,10 +173,12 @@ public class Game {
                         "Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it. \n" +
                         "To guess, type Guess Password, enter your guess after the prompt.");
 
-        MagickItemShoppe loc8 = new MagickItemShoppe(8);
+        Locale loc8 = new Locale(8);
         loc8.setName("Cafe");
         loc8.setDesc("You are in the cafe");
         loc8.setLookDesc("You have entered the cafe. Many Atlantis personal are eating here. Today they are serving blue jello and Salisbury Steak");
+        loc8.setHasItem(true);
+        loc8.setWhichItem(items[4]);
 
 
 
