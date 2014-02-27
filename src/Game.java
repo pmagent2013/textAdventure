@@ -13,6 +13,7 @@ public class Game {
     public static boolean moved = false;            // Determines whether or not to print game information
     public static boolean buying = false;           // Determines if the player is trying to buy an item
     public static boolean guessing = false;         // Determines if the player is trying to guess the password
+    public static boolean allies = false;           // Determines if the player has successfully gained allies
     public static Locale[] locations;               // An uninitialized array of type Locale. See init() for initialization.
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
@@ -237,13 +238,25 @@ public class Game {
         ListItem item3 = new ListItem();
         item3.setName("Ancient Personal Shield");
         item3.setDesc("An ancient device that protects the wearer from harm");
-        item3.setCost(50);
+        item3.setCost(20);
+
+        ListItem item4 = new ListItem();
+        item4.setName("ATA Gene Therapy");
+        item4.setDesc("A gene treatment therapy that gives the recipient the Ancient gene.");
+        item4.setCost(30);
+
+        ListItem item5 = new ListItem();
+        item5.setName("Puddle Jumper");
+        item5.setDesc("A powerful spaceship that can fit through the gate and is equipped with a cloak and drone weapons");
+        item5.setCost(150);
 
         // Link it all up.
         magicItems.setHead(item1);
         item1.setNext(item2);
         item2.setNext(item3);
-        item3.setNext(null);
+        item3.setNext(item4);
+        item4.setNext(item5);
+        item5.setNext(null);
 
         System.out.println(magicItems.Shop());
 
@@ -350,6 +363,7 @@ public class Game {
             System.out.println("Laptop Login");
             System.out.println("Username: MeredithMcKay ");
             System.out.println("Password: ");
+            System.out.println("Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it");
             guessing = true;
         }
         else{
@@ -361,8 +375,8 @@ public class Game {
         if(guessCounter>0){
             if(command.equalsIgnoreCase("16431879196842")){
                 System.out.println("You have cracked the password, Damn McKay is arrogant.");
-                System.out.println("Your reward is 200 coins.");
-                coins += 200;
+                System.out.println("Your reward is 300 coins.");
+                coins += 300;
 
             }
             else {
@@ -422,7 +436,26 @@ public class Game {
 
     //allows the user to pickup items
     private static void pickup() {
-        if(locations[currentLocale].getHasItem() == true){
+        if(locations[currentLocale].getHasItem() == true && currentLocale == 2){
+            boolean jelloCheck = false;
+            System.out.println("The Athosian leaders and have discussed coming to war with you.");
+            System.out.println("They will send soldiers to battle with you in exchange for blue jello.");
+            System.out.println("Do you have blue jello with you?");
+            for(int i=0; i<inventory.length; i++){
+                if(inventory[i] == items[4]){
+                    allies = true;
+                    jelloCheck = true;
+                    System.out.println("You do have blue jello!");
+                    System.out.println("We will fight on your side.");
+                    inventory[i] = null;
+                    System.out.println("You have gained the allies necessary to fight the Wraith");
+                }
+            }
+            if(jelloCheck == false){
+                System.out.println("You don't have blue jello with you. You must get some before we join you.");
+            }
+        }
+        else if(locations[currentLocale].getHasItem() == true){
             inventory[inventoryCounter] = locations[currentLocale].getWhichItem();
             System.out.println("You have picked up a " + inventory[inventoryCounter].getName());
             System.out.println("You also found 25 coins.");
