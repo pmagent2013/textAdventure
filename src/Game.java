@@ -12,6 +12,7 @@ public class Game {
     public static boolean stillPlaying = true;      // Controls the game loop.
     public static boolean moved = false;            // Determines whether or not to print game information
     public static boolean buying = false;           // Determines if the player is trying to buy an item
+    public static boolean guessing = false;         // Determines if the player is trying to guess the password
     public static Locale[] locations;               // An uninitialized array of type Locale. See init() for initialization.
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
@@ -22,6 +23,7 @@ public class Game {
     public static int inventoryCounter = 0;         // keeps track of # of items in inventory
     public static int coins = 100;                  // keeps track of coins used to buy items in magick shoppe
     public static int cheaterCounter = 0;           //used in case the player decides to mine for coins for too long
+    public static int guessCounter = 5;             //ued to keep track of guesses for password
     public static MagicItemsList magicItems  = new MagicItemsList();
 
     public static void main(String[] args) {
@@ -98,6 +100,8 @@ public class Game {
         Locale loc0 = new Locale(0);
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
+        loc0.setLookDesc("You have entered the Wraith's base. There are hundreds of Wraith soldiers in front of you.\n" +
+                "In the distance you see a Hive Ship with the intel you need to retrieve.\n");
         loc0.setHasItem(true);
         loc0.setHasItem(true);
         loc0.setWhichItem(items[1]);
@@ -105,6 +109,7 @@ public class Game {
         Locale loc1 = new Locale(1);
         loc1.setName("Offworld");
         loc1.setDesc("You are offworld");
+        loc1.setLookDesc("You gate to a barren world. You can gate east to a allied planet, west to the Wraith planet, or south back to Atlantis.");
 
         Locale loc2 = new Locale(2);
         loc2.setName("Village");
@@ -112,15 +117,22 @@ public class Game {
         loc2.setHasItem(true);
         loc2.setHasItem(true);
         loc2.setWhichItem(items[3]);
+        loc2.setLookDesc("You have gated to a friendly planet. The Athosians camp is in front of you. \n" +
+                        " The camp is in the middle of a dense forest, it night here. The only light you see comes from the village. \n" +
+                        "You will need to have some of them join you before you can attack the Wraith planet.");
 
         Locale loc3 = new Locale(3);
         loc3.setName("Carter Office");
         loc3.setDesc("You are in Colonel Carter\'s Office.");
+        loc3.setLookDesc("You walk into carters office. She's laying on her table in a skimpy bikini, waiting for you. \n" +
+        "Whoa. Calm down there dream boy. Enough with the fantasy. \n"+
+        "Carter is sitting at her desk, she is reviewing mission files.");
 
         Locale loc4 = new Locale(4);
         loc4.setName("Gateroom");
         loc4.setDesc("You are in the gateroom");
-        loc4.setLookDesc("You see a stargate in front of you.");
+        loc4.setLookDesc("In front of you is the Stargate. A powerful device that can transport you across the galaxy to other planets. \n" +
+                    "There are both friendly and hostile races out there. Once you have fully explored Atlantis you should venture through the Stargate.");
         loc4.setHasVisited(true);
         loc4.setHasItem(true);
         loc4.setWhichItem(items[0]);
@@ -128,6 +140,8 @@ public class Game {
         Locale loc5 = new Locale(5);
         loc5.setName("Armory");
         loc5.setDesc("You are in the armory");
+        loc5.setLookDesc("You have entered the armory. It is stocked with Assault Rifles, P90's, M9's, and C4. There are targets setup for practice. \n" +
+                "Lt. Colonel John Shepard is practicing with Major Lorne.");
         loc5.setHasItem(true);
         loc5.setHasItem(true);
         loc5.setWhichItem(items[2]);
@@ -135,17 +149,23 @@ public class Game {
         Locale loc6 = new Locale(6);
         loc6.setName("Ronan Quarter");
         loc6.setDesc("You are in Ronan\'s Quarters");
+        loc6.setLookDesc("Against logic you have entered the sleeping quarters of Ronan Dex. \n" +
+        "There is some sort of animal rug on the floor, along with paintings of Sateda. Ronan is sleeping on his bed, better hope he doesn't wake up.");
 
         Locale loc7 = new Locale(7);
         loc7.setName("McKay Lab");
         loc7.setDesc("You are in Dr. Mckay\'s Lab");
         loc7.setLookDesc("You have entered Dr. Rodney Mckay's Laboratory. You look around and see rows of computer hardware\n" +
-                        "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a lsarge\n" +
-                        "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.");
+                        "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a large\n" +
+                        "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.\n" +
+                        "Mckay's laptop is on his desk. There's a note on it, it says if you can guess my password you will get a reward. \n" +
+                        "Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it. \n" +
+                        "To guess, type Guess Password, enter your guess after the prompt.");
 
         MagickItemShoppe loc8 = new MagickItemShoppe(8);
         loc8.setName("Cafe");
         loc8.setDesc("You are in the cafe");
+        loc8.setLookDesc("You have entered the cafe. Many Atlantis personal are eating here. Today they are serving blue jello and Salisbury Steak");
 
 
 
@@ -285,12 +305,16 @@ public class Game {
             buyItems();
         } else if ( command.equalsIgnoreCase("look")  || command.equalsIgnoreCase("l") ) {
             look();
+        } else if (command.equalsIgnoreCase("guess password")  || command.equalsIgnoreCase("guess"))  {
+            password();
         } else if ( command.equalsIgnoreCase("quit")  || command.equalsIgnoreCase("q")) {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
             help();
         } else if ( currentLocale == 7 && buying == true) {
             shop();
+        } else if ( currentLocale == 7 && guessing == true) {
+            guessPassword();
         } else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
         };
@@ -305,6 +329,38 @@ public class Game {
                 moved=true;
 
             }
+        }
+    }
+
+    private static void password() {
+        if(currentLocale == 7){
+            System.out.println("Laptop Login");
+            System.out.println("Username: MeredithMcKay ");
+            System.out.println("Password: ");
+            guessing = true;
+        }
+        else{
+            System.out.println("Go to McKay's Lab to purchase items.");
+        }
+    }
+
+    private static void guessPassword() {
+        if(guessCounter>0){
+            if(command.equalsIgnoreCase("16431879196842")){
+                System.out.println("You have cracked the password, Damn McKay is arrogant.");
+                System.out.println("Your reward is 200 coins.");
+                coins += 200;
+
+            }
+            else {
+                System.out.println("Incorrect Password. Chances left: " + (guessCounter-1));
+                System.out.println("To try again type, guess password");
+            }
+            guessing = false;
+            guessCounter--;
+        }
+        else{
+            System.out.println("You have guessed too many times, the laptop encrypted itself and is now inaccessible");
         }
     }
 
