@@ -128,8 +128,8 @@ public class Game {
         loc2.setHasItem(true);
         loc2.setWhichItem(items[3]);
         loc2.setLookDesc("You have gated to a friendly planet. The Athosians camp is in front of you. \n" +
-                        " The camp is in the middle of a dense forest, it night here. The only light you see comes from the village. \n" +
-                        "You will need to have some of them join you before you can attack the Wraith planet.");
+                " The camp is in the middle of a dense forest, it night here. The only light you see comes from the village. \n" +
+                "You will need to have some of them join you before you can attack the Wraith planet.");
         loc2.setInhabitants("Athosians");
         loc2.setNumberOfInhabitants(250);
 
@@ -137,14 +137,14 @@ public class Game {
         loc3.setName("Carter Office");
         loc3.setDesc("You are in Colonel Carter\'s Office.");
         loc3.setLookDesc("You walk into carters office. She's laying on her table in a skimpy bikini, waiting for you. \n" +
-        "Whoa. Calm down there dream boy. Enough with the fantasy. \n"+
-        "Carter is sitting at her desk, she is reviewing mission files.");
+                "Whoa. Calm down there dream boy. Enough with the fantasy. \n"+
+                "Carter is sitting at her desk, she is reviewing mission files.");
 
         Locale loc4 = new Locale(4);
         loc4.setName("Gateroom");
         loc4.setDesc("You are in the gateroom");
         loc4.setLookDesc("In front of you is the Stargate. A powerful device that can transport you across the galaxy to other planets. \n" +
-                    "There are both friendly and hostile races out there. Once you have fully explored Atlantis you should venture through the Stargate.");
+                "There are both friendly and hostile races out there. Once you have fully explored Atlantis you should venture through the Stargate.");
         loc4.setHasVisited(true);
         loc4.setHasItem(true);
         loc4.setWhichItem(items[0]);
@@ -162,17 +162,17 @@ public class Game {
         loc6.setName("Ronan Quarter");
         loc6.setDesc("You are in Ronan\'s Quarters");
         loc6.setLookDesc("Against logic you have entered the sleeping quarters of Ronan Dex. \n" +
-        "There is some sort of animal rug on the floor, along with paintings of Sateda. Ronan is sleeping on his bed, better hope he doesn't wake up.");
+                "There is some sort of animal rug on the floor, along with paintings of Sateda. Ronan is sleeping on his bed, better hope he doesn't wake up.");
 
         Locale loc7 = new Locale(7);
         loc7.setName("McKay Lab");
         loc7.setDesc("You are in Dr. Mckay\'s Lab");
         loc7.setLookDesc("You have entered Dr. Rodney Mckay's Laboratory. You look around and see rows of computer hardware\n" +
-                        "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a large\n" +
-                        "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.\n" +
-                        "Mckay's laptop is on his desk. There's a note on it, it says if you can guess my password you will get a reward. \n" +
-                        "Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it. \n" +
-                        "To guess, type Guess Password, enter your guess after the prompt.");
+                "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a large\n" +
+                "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.\n" +
+                "Mckay's laptop is on his desk. There's a note on it, it says if you can guess my password you will get a reward. \n" +
+                "Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it. \n" +
+                "To guess, type Guess Password, enter your guess after the prompt.");
 
         Locale loc8 = new Locale(8);
         loc8.setName("Cafe");
@@ -215,7 +215,7 @@ public class Game {
          /* nav[2] for loc 8 */  {  5, -1, -1,  7 },
 
         };
-
+        createMagicItems();
     }
 
     private static void createMagicItems() {
@@ -250,6 +250,7 @@ public class Game {
         item5.setDesc("A powerful spaceship that can fit through the gate and is equipped with a cloak and drone weapons");
         item5.setCost(150);
 
+        /*
         // Link it all up.
         magicItems.setHead(item1);
         item1.setNext(item2);
@@ -257,8 +258,16 @@ public class Game {
         item3.setNext(item4);
         item4.setNext(item5);
         item5.setNext(null);
+        */
+        magicItems.add(item1);
+        magicItems.add(item2);
+        magicItems.add(item3);
+        magicItems.add(item4);
+        magicItems.add(item5);
 
-        System.out.println(magicItems.Shop());
+
+
+
 
 
     }
@@ -500,7 +509,7 @@ public class Game {
         if(currentLocale == 7){
             System.out.println("Welcome to the Magick Shoppe protoype created by Dr. Rodney McKay");
             System.out.println("These are the items available for purchase: ");
-            createMagicItems();
+            System.out.println(magicItems.Shop());
             System.out.println("What would you like to buy?");
             buying = true;
         }
@@ -527,10 +536,10 @@ public class Game {
                 System.out.println("|    *    |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|         |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }
@@ -539,10 +548,10 @@ public class Game {
                 System.out.println("|         |    *    |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|         |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }
@@ -551,10 +560,10 @@ public class Game {
                 System.out.println("|         |         |    *    |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }
@@ -563,10 +572,10 @@ public class Game {
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|         |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|____*____|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }
@@ -575,10 +584,10 @@ public class Game {
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("|Carter's |    *    |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }
@@ -587,10 +596,10 @@ public class Game {
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|         |    *    |");
+                System.out.println("|Carter's |         |    *    |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }
@@ -599,10 +608,10 @@ public class Game {
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|         |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|____*____|_________|_________|");
             }
@@ -611,10 +620,10 @@ public class Game {
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |         |");
+                System.out.println("|Ronan's  |McKay's  |         |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|____*____|_________|");
             }
@@ -623,10 +632,10 @@ public class Game {
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter/'s|    *    |         |");
+                System.out.println("|Carter's |         |         |");
                 System.out.println("| Office  |Gateroom | Armory  |");
                 System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan/'s |McKay/'s |    *    |");
+                System.out.println("|Ronan's  |McKay's  |    *    |");
                 System.out.println("|Quarters |   Lab   |The Cafe |");
                 System.out.println("|_________|_________|_________|");
             }

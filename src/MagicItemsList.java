@@ -53,7 +53,24 @@ public class MagicItemsList {
         return retVal;
     }
 
+    public void add(ListItem item){
+        //if list is empty
+        if(this.head == null){
+            this.setHead(item);
+        }
+        //list is not empty
+        //move to end of list
+        else{
+            ListItem lastItem = this.head;
+            while (lastItem.getNext() != null) {
+                lastItem = lastItem.getNext();
+            }
+            //attach the passed in item to end of list
+            lastItem.setNext(item);
 
+
+        }
+    }
 
 
     //
