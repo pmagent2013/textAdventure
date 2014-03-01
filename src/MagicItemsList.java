@@ -30,6 +30,13 @@ public class MagicItemsList {
         this.head = head;
     }
 
+    public ListItem getLast() {
+        return last;
+    }
+    public void setLast(ListItem last) {
+        this.last = last;
+    }
+
     // Other methods
     @Override
     public String toString() {
@@ -57,18 +64,13 @@ public class MagicItemsList {
         //if list is empty
         if(this.head == null){
             this.setHead(item);
+            this.last = item;
         }
         //list is not empty
         //move to end of list
         else{
-            ListItem lastItem = this.head;
-            while (lastItem.getNext() != null) {
-                lastItem = lastItem.getNext();
-            }
-            //attach the passed in item to end of list
-            lastItem.setNext(item);
-
-
+            this.last.setNext(item);
+            this.last = item;
         }
     }
 
@@ -79,5 +81,6 @@ public class MagicItemsList {
     private String name;
     private String desc;
     private ListItem head;
+    private ListItem last;
 
 }

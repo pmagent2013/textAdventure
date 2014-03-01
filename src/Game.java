@@ -106,7 +106,7 @@ public class Game {
         OffWorld loc0 = new OffWorld(0);
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
-        loc0.setLookDesc("You have entered the Wraith's base. There are hundreds of Wraith soldiers in front of you.\n" +
+        loc0.setLookDesc("You have entered the Wraith's base. There are " +loc0.getNumberOfInhabitants() + " Wraith soldiers in front of you.\n" +
                 "In the distance you see a Hive Ship with the intel you need to retrieve.\n");
         loc0.setHasItem(true);
         loc0.setHasItem(true);
