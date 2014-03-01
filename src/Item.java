@@ -35,6 +35,13 @@ public class Item{
             this.hasPicked = hasPicked;
         }
 
+        public int getPower() {
+            return power;
+        }
+        public void setPower(int power) {
+            this.power = power;
+        }
+
 
         // Other methods
         public String toString() {
@@ -48,6 +55,7 @@ public class Item{
 private int     id;
 private String  name;
 private String  desc;
+private int power;
 private boolean hasPicked = false;
 
 

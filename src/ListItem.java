@@ -29,12 +29,21 @@ public class ListItem {
     public void setNext(ListItem next) {
         this.next = next;
     }
+
     public int getCost() {
         return cost;
     }
     public void setCost(int cost) {
         this.cost = cost;
     }
+
+    public int getPower() {
+        return power;
+    }
+    public void setPower(int power) {
+        this.power = power;
+    }
+
     // Other methods
     @Override
     public String toString() {
@@ -53,6 +62,7 @@ public class ListItem {
     private String name;
     private String desc;
     private int cost;
+    private int power;
     private ListItem next = null;
 
 }

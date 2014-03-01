@@ -18,6 +18,7 @@ public class Game {
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
     public static int score = 5;                    // Tracker of the player's score.
+    public static int totalPower = 0;               // Keeps track of the total power the player has / damage they can do
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
     public static ArrayList<ListItem> magicItemsInventory = new ArrayList<ListItem>();
@@ -82,6 +83,7 @@ public class Game {
         Item item2 = new Item(2);
         item2.setName("gun");
         item2.setDesc("There is an assault rifle available for pickup.");
+        item2.setPower(5);
 
         Item item3 = new Item(3);
         item3.setName("allies");
@@ -229,47 +231,37 @@ public class Game {
         item1.setName("Wraith Stunner");
         item1.setDesc("Gun that stuns target");
         item1.setCost(10);
+        item1.setPower(3);
 
         ListItem item2 = new ListItem();
         item2.setName("ZPM");
         item2.setDesc("An ancient power source that extracts vacuum energy from an artificial region of subspace-time until it reaches maximum entropy");
         item2.setCost(200);
+        item2.setPower(110);
 
         ListItem item3 = new ListItem();
         item3.setName("Ancient Personal Shield");
         item3.setDesc("An ancient device that protects the wearer from harm");
         item3.setCost(20);
+        item3.setPower(7);
 
         ListItem item4 = new ListItem();
         item4.setName("ATA Gene Therapy");
         item4.setDesc("A gene treatment therapy that gives the recipient the Ancient gene.");
         item4.setCost(30);
+        item4.setPower(11);
 
         ListItem item5 = new ListItem();
         item5.setName("Puddle Jumper");
         item5.setDesc("A powerful spaceship that can fit through the gate and is equipped with a cloak and drone weapons");
         item5.setCost(150);
+        item5.setPower(80);
 
-        /*
-        // Link it all up.
-        magicItems.setHead(item1);
-        item1.setNext(item2);
-        item2.setNext(item3);
-        item3.setNext(item4);
-        item4.setNext(item5);
-        item5.setNext(null);
-        */
         magicItems.add(item1);
         magicItems.add(item2);
         magicItems.add(item3);
         magicItems.add(item4);
         magicItems.add(item5);
-
-
-
-
-
-
     }
 
     private static void updateDisplay() {
@@ -412,6 +404,7 @@ public class Game {
                     coins-=currentItem.getCost();
                     boughtSomething = true;
                     magicItemsInventory.add(currentItem);
+                    totalPower += currentItem.getPower();
                 }
                 else{
                     System.out.println("McKay set the price too high, you don't have enough coins to afford this item.");
@@ -469,6 +462,7 @@ public class Game {
             System.out.println("You have picked up a " + inventory[inventoryCounter].getName());
             System.out.println("You also found 25 coins.");
             coins+=25;
+            totalPower += locations[currentLocale].getWhichItem().getPower();
             locations[currentLocale].setHasItem(false);
             inventoryCounter++;
         }
