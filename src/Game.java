@@ -77,6 +77,8 @@ public class Game {
         item0.setName("map");
         item0.setDesc("There is a map available for pickup.");
 
+        //todo: add item to replace item 1
+
         Item item2 = new Item(2);
         item2.setName("gun");
         item2.setDesc("There is an assault rifle available for pickup.");
@@ -126,7 +128,7 @@ public class Game {
                 " The camp is in the middle of a dense forest, it night here. The only light you see comes from the village. \n" +
                 "You will need to have some of them join you before you can attack the Wraith planet.");
         loc2.setInhabitants("Athosians");
-        loc2.setNumberOfInhabitants(250);
+        loc2.setNumberOfInhabitants(100);
 
         Locale loc3 = new Locale(3);
         loc3.setName("Carter Office");
@@ -214,6 +216,7 @@ public class Game {
         createMagicItems();
     }
 
+    //Creates the items that player can buy from McKay's Machine
     private static void createMagicItems() {
         // Create the list manager for our magic items.
         magicItems.setName("List of Magic Items");
@@ -297,14 +300,16 @@ public class Game {
                 score+=5;
                 locations[currentLocale].setHasVisited(true);
             }else
-            if(currentLocale == 0 && allies == true) {
+
+            //code for the end game
+            if(currentLocale == 0 && allies == true) { //Player can only attack if they have gained allies
                 System.out.println("You and your allies have gated in, the enemy troops have spotted you. You can either begin your attack or gate back.");
-                System.out.println("Would you like to attack? Yes, or no?");
+                System.out.println("Would you like to attack? Yes, or no?"); //Gives player option to attack
                 getCommand();
                 if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
                     attack();
                 }
-                else{
+                else{ //If player chooses not to attack, send them back to location 1
                     currentLocale = 1;
                     updateDisplay();
                     System.out.println("You have gated back. When you are ready to attack, travel to the enemy base again.");
@@ -315,8 +320,9 @@ public class Game {
                 System.out.println("Without allies you don't stand a chance. Come back when you have gained allies");
             }
         }
+        //displays the opening story for the game
         else{
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(); //Used StringBuilder to save memory
             sb.append("Cheyenne Mountain, Colorado. \n");
             sb.append("Major Young, due to your outstanding performance in the field, you have been promoted, and given the highest level of security clearance. \n");
             sb.append("The device in front of you is a Stargate. It was created by a race of beings we refer to as the Ancients. \n");
@@ -335,49 +341,52 @@ public class Game {
 
     }
 
+    //gets inputs from the player
     private static void getCommand(){
         Scanner inputReader = new Scanner(System.in);
         command = inputReader.nextLine();  // command is global.
     }
 
+    //allows the player to move around the map
     private static void navigate() {
         final int INVALID = -1;
         int dir = INVALID;  // This will get set to a value > 0 if a direction command was entered.
 
-        if (        command.equalsIgnoreCase("north") || command.equalsIgnoreCase("n") || command.equalsIgnoreCase("go north") || command.equalsIgnoreCase(" go n") ) {
+        if (        command.equalsIgnoreCase("north") || command.equalsIgnoreCase("n") || command.equalsIgnoreCase("go north") || command.equalsIgnoreCase(" go n") ) { //go north
             dir = 0;
-        } else if ( command.equalsIgnoreCase("south") || command.equalsIgnoreCase("s") || command.equalsIgnoreCase("go south") || command.equalsIgnoreCase(" go s") ) {
+        } else if ( command.equalsIgnoreCase("south") || command.equalsIgnoreCase("s") || command.equalsIgnoreCase("go south") || command.equalsIgnoreCase(" go s") ) { //go south
             dir = 1;
-        } else if ( command.equalsIgnoreCase("east")  || command.equalsIgnoreCase("e") || command.equalsIgnoreCase("go east") || command.equalsIgnoreCase(" go e") ) {
+        } else if ( command.equalsIgnoreCase("east")  || command.equalsIgnoreCase("e") || command.equalsIgnoreCase("go east") || command.equalsIgnoreCase(" go e") ) { //go east
             dir = 2;
-        } else if ( command.equalsIgnoreCase("west")  || command.equalsIgnoreCase("w") || command.equalsIgnoreCase("go west") || command.equalsIgnoreCase(" go w") ) {
+        } else if ( command.equalsIgnoreCase("west")  || command.equalsIgnoreCase("w") || command.equalsIgnoreCase("go west") || command.equalsIgnoreCase(" go w") ) { //go west
             dir = 3;
 
-        } else if ( command.equalsIgnoreCase("pick")  || command.equalsIgnoreCase("pickup") || command.equalsIgnoreCase("p")) {
+        } else if ( command.equalsIgnoreCase("pick")  || command.equalsIgnoreCase("pickup") || command.equalsIgnoreCase("p")) { //pickup item
             pickup();
-        } else if ( command.equalsIgnoreCase("inventory")  || command.equalsIgnoreCase("i") ) {
+        } else if ( command.equalsIgnoreCase("inventory")  || command.equalsIgnoreCase("i") ) { //show items in inventory
             showInventory();
-        } else if ( command.equalsIgnoreCase("map")  || command.equalsIgnoreCase("m") ) {
+        } else if ( command.equalsIgnoreCase("map")  || command.equalsIgnoreCase("m") ) { //shows the map
             showMap();
-        } else if ( command.equalsIgnoreCase("buy")  || command.equalsIgnoreCase("b") ) {
+        } else if ( command.equalsIgnoreCase("buy")  || command.equalsIgnoreCase("b") ) { //buy items
             buyItems();
-        } else if ( command.equalsIgnoreCase("look")  || command.equalsIgnoreCase("l") ) {
+        } else if ( command.equalsIgnoreCase("look")  || command.equalsIgnoreCase("l") ) { //look around
             look();
-        } else if (command.equalsIgnoreCase("guess password")  || command.equalsIgnoreCase("guess"))  {
+        } else if (command.equalsIgnoreCase("guess password")  || command.equalsIgnoreCase("guess"))  { //guess password
             password();
-        } else if ( command.equalsIgnoreCase("quit")  || command.equalsIgnoreCase("q")) {
+        } else if ( command.equalsIgnoreCase("quit")  || command.equalsIgnoreCase("q")) { //quit game
             quit();
-        } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
+        } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) { //display available commands
             help();
-        } else if ( currentLocale == 8 && buying == true) {
+        } else if ( currentLocale == 8 && buying == true) { //buy prompt
             shop();
-        } else if ( currentLocale == 8 && guessing == true) {
+        } else if ( currentLocale == 8 && guessing == true) { //guess prompt
             guessPassword();
-        } else if (command.equalsIgnoreCase("kiss")) {
+        //easter egg commands
+        } else if (command.equalsIgnoreCase("kiss")) { //kiss someone
             kiss();
-        }else if (command.equalsIgnoreCase("dance")) {
+        }else if (command.equalsIgnoreCase("dance")) { //dance
             dance();
-        }else if (command.equalsIgnoreCase("wake") || command.equalsIgnoreCase("wake up") || command.equalsIgnoreCase("wakeup")) {
+        }else if (command.equalsIgnoreCase("wake") || command.equalsIgnoreCase("wake up") || command.equalsIgnoreCase("wakeup")) { //wake up Ronan
             wake();
         }else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
@@ -385,6 +394,7 @@ public class Game {
 
         if (dir > -1) {   // This means a dir was set.
             int newLocation = nav[currentLocale][dir];
+            //if the player can't go that way, tell them
             if (newLocation == INVALID) {
                 System.out.println("You cannot go that way.");
             } else {
@@ -396,6 +406,7 @@ public class Game {
         }
     }
 
+    //Prompts the player to enter a guess at the password
     private static void password() {
         if(currentLocale == 8){
             System.out.println("Laptop Login");
@@ -409,6 +420,7 @@ public class Game {
         }
     }
 
+    //Allows player to attempt to guess a password to gain additional coins
     private static void guessPassword() {
         if(guessCounter>0){
             if(command.equalsIgnoreCase("16431879196842")){
@@ -429,22 +441,37 @@ public class Game {
         }
     }
 
+    //if the player types buy in the right location, display this prompt
+    private static void buyItems() {
+        if(currentLocale == 8){
+            System.out.println("Welcome to the Magick Shoppe protoype created by Dr. Rodney McKay");
+            System.out.println("These are the items available for purchase: ");
+            System.out.println(magicItems.Shop());
+            System.out.println("What would you like to buy?");
+            buying = true;
+        }
+        else{
+            System.out.println("Go to McKay's Lab to purchase items.");
+        }
+    }
+
+    //checks to see if the item the player typed is available to be bought, checks if player has enough coins, adds to inventory, subtracts coins
     private static void shop() {
 
         ListItem currentItem = magicItems.getHead();
         Boolean boughtSomething = false;
         while (currentItem != null) {
-            if(command.equalsIgnoreCase(currentItem.getName())){
-                if(coins >= currentItem.getCost()){
+            if(command.equalsIgnoreCase(currentItem.getName())){ //looks for item
+                if(coins >= currentItem.getCost()){ //checks for enough coins
                     System.out.println("You have purchased a " + currentItem.getName());
                     System.out.println("Thank you for testing out Dr. McKays's Prototype Magick Shoppe. Please come again. ");
-                    coins-=currentItem.getCost();
+                    coins-=currentItem.getCost(); //subtracts coins
                     boughtSomething = true;
-                    magicItemsInventory.add(currentItem);
-                    totalPower += currentItem.getPower();
+                    magicItemsInventory.add(currentItem); //adds item to inventory
+                    totalPower += currentItem.getPower(); //adds to players power
                 }
                 else{
-                    System.out.println("McKay set the price too high, you don't have enough coins to afford this item.");
+                    System.out.println("McKay set the price too high, you don't have enough coins to afford this item."); //if player doesn't have enough coins
                     boughtSomething = true;
                 }
 
@@ -454,7 +481,7 @@ public class Game {
         }
         buying = false;
         if(boughtSomething == false){
-            System.out.println("That is not an item McKay has stocked the machine with. ");
+            System.out.println("That is not an item McKay has stocked the machine with. "); // if player typed unavailable item
         }
     }
 
@@ -475,51 +502,55 @@ public class Game {
 
     //allows the user to pickup items
     private static void pickup() {
-        if(locations[currentLocale].getHasItem() == true && currentLocale == 2){
+        if(locations[currentLocale].getHasItem() == true && currentLocale == 2){ //a check for gaining allies
             boolean jelloCheck = false;
             System.out.println("The Athosian leaders and have discussed coming to war with you.");
             System.out.println("They will send soldiers to battle with you in exchange for blue jello.");
             System.out.println("Do you have blue jello with you?");
+            //checks for jello in inventory
             for(int i=0; i<inventory.length; i++){
                 if(inventory[i] == items[4]){
-                    allies = true;
+                    allies = true; //player now has allies
                     jelloCheck = true;
                     System.out.println("You do have blue jello!");
                     System.out.println("We will fight on your side.");
                     System.out.println("You have gained the allies necessary to fight the Wraith");
-                    totalPower += 100;
+                    totalPower += 100; //adds to power total
                 }
             }
             if(jelloCheck == false){
                 System.out.println("You don't have blue jello with you. You must get some before we join you.");
             }
         }
+        //in all other locations, checks if there is an item available for pickup
         else if(locations[currentLocale].getHasItem() == true){
-            inventory[inventoryCounter] = locations[currentLocale].getWhichItem();
-            System.out.println("You have picked up a " + inventory[inventoryCounter].getName());
+            inventory[inventoryCounter] = locations[currentLocale].getWhichItem(); //if there is an item, pick it up
+            System.out.println("You have picked up a " + inventory[inventoryCounter].getName()); //tells player
             System.out.println("You also found 25 coins.");
-            coins+=25;
-            totalPower += locations[currentLocale].getWhichItem().getPower();
+            coins+=25; //give them coins as a bonus
+            totalPower += locations[currentLocale].getWhichItem().getPower(); //adds items power to players total
             locations[currentLocale].setHasItem(false);
             inventoryCounter++;
         }
         else{
+            //if there is no item to pickup, it tells trhe player and gives them 5 coins anyway
             System.out.println("There is no item here to pickup.");
             System.out.println("But you found 5 coins.");
             coins+=5;
-            cheaterCounter++;
-            if(cheaterCounter >= 25){
+            cheaterCounter++; //prevents the player from abusing my generosity
+            if(cheaterCounter >= 25){ //if they abuse my generosity, punish them
                 System.out.println("You think you're smart, think you found a way to cheat the system and get a shit load of coins? ");
                 System.out.println("Well guess what");
                 System.out.println("An ascended ancient has appeared and chastises you for being greedy. ");
                 System.out.println("As punishment you lose all your coins. ");
                 System.out.println("And Ronan punches you in the face. ");
-                coins = 0;
+                coins = 0; //take all their coins
                 cheaterCounter = 0;
             }
         }
     }
 
+    //allows the player to view the items they have picked up
     private static void showInventory() {
         int i=0;
         System.out.print("You currently have ");
@@ -536,23 +567,12 @@ public class Game {
 
     }
 
-    private static void buyItems() {
-        if(currentLocale == 8){
-            System.out.println("Welcome to the Magick Shoppe protoype created by Dr. Rodney McKay");
-            System.out.println("These are the items available for purchase: ");
-            System.out.println(magicItems.Shop());
-            System.out.println("What would you like to buy?");
-            buying = true;
-        }
-        else{
-            System.out.println("Go to McKay's Lab to purchase items.");
-        }
-    }
-
+    //If the player types look, provide them with the longer description of the current location
     private static void look() {
         System.out.println(locations[currentLocale].getLookDesc());
     }
 
+    //if the player is in the enemy base give them the option to attack
     private static void attack() {
         System.out.println("You have begun your assault on the Wraith Base ");
         if(totalPower > enemyCount){
@@ -567,6 +587,7 @@ public class Game {
         }
     }
 
+    //Displays the map to help the player navigate
     private static void showMap() {
         boolean hasMap = false;
         for(int i=0; i<inventoryCounter; i++){
@@ -574,7 +595,8 @@ public class Game {
                 hasMap = true;
             }
         }
-
+        //Only shows the map if the player has picked it up
+        //Displays an indicator that will show what location the player is in
         if(hasMap == true){
             if(currentLocale == 0){
                 System.out.println(" _____________________________");
@@ -717,6 +739,7 @@ public class Game {
     //Easter Eggs
     //
 
+    //allows the player to attempt to kiss various characters
     private static void kiss() {
         if(currentLocale == 2){
             System.out.println("You see Teyla is the distance, you walk over grab her, before you can kiss her she flips you on your back and kicks you in the groin.");
@@ -734,9 +757,13 @@ public class Game {
             System.out.println("There is no one here to kiss.");
         }
     }
+
+    //allows the player to randomly dance
     private static void dance() {
         System.out.println("You suddenly break out into dance, everyone looks at you strangely.");
     }
+
+    //allows the player to wake up Ronan Dex
     private static void wake() {
         if(currentLocale == 6){
             System.out.println("For some reason you have decided to wake up Ronan, predictably you get your ass kicked.");
