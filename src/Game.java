@@ -263,55 +263,72 @@ public class Game {
 
         System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + score / moves + ", coins: " + coins + "] ");
         System.out.println();
-        if(locations[currentLocale].getHasItem() == true && locations[currentLocale].getHasVisited() == false){
-            System.out.println(locations[currentLocale].getLookDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
-        }
-        else if(locations[currentLocale].getHasVisited() == false){
-            System.out.println(locations[currentLocale].getLookDesc());
-        }
-        else if(locations[currentLocale].getHasItem() == true)
-        {
-            System.out.println(locations[currentLocale].getDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
-        }
-        else{
-            System.out.println(locations[currentLocale].getDesc());
-        }
-        System.out.print("From here the directions you can move are: ");
-        if(nav[currentLocale][0]!=-1){
-            System.out.print("North ");
-        }
-        if(nav[currentLocale][1]!=-1){
-            System.out.print("South ");
-        }
-        if(nav[currentLocale][2]!=-1){
-            System.out.print("East ");
-        }
-        if(nav[currentLocale][3]!=-1){
-            System.out.print("West ");
-        }
-        System.out.println();
-        buying = false;
-        //gives the player 5 points the first time they visit a location
-        if(locations[currentLocale].getHasVisited() == false){
-            score+=5;
-            locations[currentLocale].setHasVisited(true);
-        }else
-        if(currentLocale == 0 && allies == true) {
-            System.out.println("You and your allies have gated in, the enemy troops have spotted you. You can either begin your attack or gate back.");
-            System.out.println("Would you like to attack? Yes, or no?");
-            getCommand();
-            if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
-                attack();
+        if(moves -1!= 0){
+            if(locations[currentLocale].getHasItem() == true && locations[currentLocale].getHasVisited() == false){
+                System.out.println(locations[currentLocale].getLookDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
+            }
+            else if(locations[currentLocale].getHasVisited() == false){
+                System.out.println(locations[currentLocale].getLookDesc());
+            }
+            else if(locations[currentLocale].getHasItem() == true)
+            {
+                System.out.println(locations[currentLocale].getDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
             }
             else{
-                currentLocale = 1;
-                updateDisplay();
-                System.out.println("You have gated back. When you are ready to attack, travel to the enemy base again.");
+                System.out.println(locations[currentLocale].getDesc());
             }
+            System.out.print("From here the directions you can move are: ");
+            if(nav[currentLocale][0]!=-1){
+                System.out.print("North ");
+            }
+            if(nav[currentLocale][1]!=-1){
+                System.out.print("South ");
+            }
+            if(nav[currentLocale][2]!=-1){
+                System.out.print("East ");
+            }
+            if(nav[currentLocale][3]!=-1){
+                System.out.print("West ");
+            }
+            System.out.println();
+            buying = false;
+            //gives the player 5 points the first time they visit a location
+            if(locations[currentLocale].getHasVisited() == false){
+                score+=5;
+                locations[currentLocale].setHasVisited(true);
+            }else
+            if(currentLocale == 0 && allies == true) {
+                System.out.println("You and your allies have gated in, the enemy troops have spotted you. You can either begin your attack or gate back.");
+                System.out.println("Would you like to attack? Yes, or no?");
+                getCommand();
+                if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
+                    attack();
+                }
+                else{
+                    currentLocale = 1;
+                    updateDisplay();
+                    System.out.println("You have gated back. When you are ready to attack, travel to the enemy base again.");
+                }
 
+            }
+            else if(currentLocale == 0 && allies == false) {
+                System.out.println("Without allies you don't stand a chance. Come back when you have gained allies");
+            }
         }
-        else if(currentLocale == 0 && allies == false) {
-            System.out.println("Without allies you don't stand a chance. Come back when you have gained allies");
+        else{
+            StringBuilder sb = new StringBuilder();
+            sb.append("Cheyenne Mountain, Colorado. \n");
+            sb.append("Major Young, due to your outstanding performance in the field, you have been promoted, and given the highest level of security clearance. \n");
+            sb.append("The device in front of you is a Stargate. It was created by a race of beings we refer to as the Ancients. \n");
+            sb.append("It creates a wormhole, enabling instantaneous transportation to another Stargate located many light years away from the starting point. \n");
+            sb.append("We have used this network of Stargates to explore the Milky Way, and discover more about these Ancients. \n");
+            sb.append("About 5 years ago, we discovered that the Ancients left our galaxy and moved to the Pegasus Galaxy. They built a large city called Atlantis. \n");
+            sb.append("We sent an expedition and upon their arrival we discovered a powerful enemy in the Galaxy. We have finally located their homeworld.\n");
+            sb.append("We need you to travel to Atlantis, gather powerful technology, and weapons, and form an alliance with a race of friendly aliens. \n");
+            sb.append("You must then launch an attack on their planet and make the Galaxy safe. Now step through the Stargate and complete you mission Major.\n");
+            sb.append("................. \n");
+            sb.append("Hello Major, I am Dr. Elizabeth Weir. Welcome to Atlantis, you are free to explore the city. When you are ready travel through the Stargate to Complete your mission. \n");
+            System.out.println(sb);
         }
 
     }
