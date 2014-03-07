@@ -327,7 +327,9 @@ public class Game {
             sb.append("We need you to travel to Atlantis, gather powerful technology, and weapons, and form an alliance with a race of friendly aliens. \n");
             sb.append("You must then launch an attack on their planet and make the Galaxy safe. Now step through the Stargate and complete you mission Major.\n");
             sb.append("................. \n");
-            sb.append("Hello Major, I am Dr. Elizabeth Weir. Welcome to Atlantis, you are free to explore the city. When you are ready travel through the Stargate to Complete your mission. \n");
+            sb.append("Hello Major, I am Colonel Carter. Welcome to Atlantis, you are free to explore the city. When you are ready travel through the Stargate to Complete your mission. \n");
+            sb.append("... You look around. In front of you is the Stargate, behind you is the Cafe. To the left is Carter's Office, and to the right is the Armory \n");
+            sb.append("Basic Commands You Can Type: North. South. East. West. Pickup. Inventory. Map. Buy. Quit. \n");
             System.out.println(sb);
         }
 
@@ -342,13 +344,13 @@ public class Game {
         final int INVALID = -1;
         int dir = INVALID;  // This will get set to a value > 0 if a direction command was entered.
 
-        if (        command.equalsIgnoreCase("north") || command.equalsIgnoreCase("n") ) {
+        if (        command.equalsIgnoreCase("north") || command.equalsIgnoreCase("n") || command.equalsIgnoreCase("go north") || command.equalsIgnoreCase(" go n") ) {
             dir = 0;
-        } else if ( command.equalsIgnoreCase("south") || command.equalsIgnoreCase("s") ) {
+        } else if ( command.equalsIgnoreCase("south") || command.equalsIgnoreCase("s") || command.equalsIgnoreCase("go south") || command.equalsIgnoreCase(" go s") ) {
             dir = 1;
-        } else if ( command.equalsIgnoreCase("east")  || command.equalsIgnoreCase("e") ) {
+        } else if ( command.equalsIgnoreCase("east")  || command.equalsIgnoreCase("e") || command.equalsIgnoreCase("go east") || command.equalsIgnoreCase(" go e") ) {
             dir = 2;
-        } else if ( command.equalsIgnoreCase("west")  || command.equalsIgnoreCase("w") ) {
+        } else if ( command.equalsIgnoreCase("west")  || command.equalsIgnoreCase("w") || command.equalsIgnoreCase("go west") || command.equalsIgnoreCase(" go w") ) {
             dir = 3;
 
         } else if ( command.equalsIgnoreCase("pick")  || command.equalsIgnoreCase("pickup") || command.equalsIgnoreCase("p")) {
@@ -371,7 +373,13 @@ public class Game {
             shop();
         } else if ( currentLocale == 8 && guessing == true) {
             guessPassword();
-        } else{
+        } else if (command.equalsIgnoreCase("kiss")) {
+            kiss();
+        }else if (command.equalsIgnoreCase("dance")) {
+            dance();
+        }else if (command.equalsIgnoreCase("wake") || command.equalsIgnoreCase("wake up") || command.equalsIgnoreCase("wakeup")) {
+            wake();
+        }else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
         };
 
@@ -703,4 +711,44 @@ public class Game {
     private static void quit() {
         stillPlaying = false;
     }
+
+
+    //
+    //Easter Eggs
+    //
+
+    private static void kiss() {
+        if(currentLocale == 2){
+            System.out.println("You see Teyla is the distance, you walk over grab her, before you can kiss her she flips you on your back and kicks you in the groin.");
+        }
+        else if(currentLocale == 3){
+            System.out.println("You walk over to Carter's desk. Spin her around, and lean in to kiss her.... Hey dream boy, Wake Up!");
+        }
+        else if(currentLocale == 5){
+            System.out.println("You see Shepard doing target practice. You tap him on the shoulder and lean in for a kiss. He points his 9mm in your face and tells you to leave.");
+        }
+        else if(currentLocale == 6){
+            System.out.println("You walk over to Ronan and lean in for a kiss. You get punched in the face, repeatedly.");
+        }
+        else{
+            System.out.println("There is no one here to kiss.");
+        }
+    }
+    private static void dance() {
+        System.out.println("You suddenly break out into dance, everyone looks at you strangely.");
+    }
+    private static void wake() {
+        if(currentLocale == 6){
+            System.out.println("For some reason you have decided to wake up Ronan, predictably you get your ass kicked.");
+            if(coins>=5){
+                System.out.println("While Ronan was kicking the crap out of you, you dropped 5 coins, he takes them . Ronan then went back to sleep");
+                coins-=5;
+            }
+        }
+        else{
+            System.out.println("There is no one here sleeping to be woken up.");
+        }
+    }
+
+
 }
