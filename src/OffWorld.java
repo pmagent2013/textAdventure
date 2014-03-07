@@ -13,14 +13,13 @@ public class OffWorld extends Locale{
     public String getInhabitants() {
         return inhabitants;
     }
-
     public void setInhabitants(String inhabitants) {
         this.inhabitants = inhabitants;
     }
+
     public int getNumberOfInhabitants() {
         return numberOfInhabitants;
     }
-
     public void setNumberOfInhabitants(int numberOfInhabitants) {
         this.numberOfInhabitants = numberOfInhabitants;
     }

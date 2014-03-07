@@ -6,8 +6,8 @@ public class Game {
 
     // Globals
     public static final boolean DEBUGGING = false;   // Debugging flag.
-    public static final int MAX_LOCALES = 2;        // Total number of rooms/locations we have in the game.
-    public static int currentLocale = 4;            // Player starts in locale 0.
+    public static final int MAX_LOCALES = 9;        // Total number of rooms/locations we have in the game.
+    public static int currentLocale = 4;            // Player starts in locale 4.
     public static String command;                   // What the player types as he or she plays the game.
     public static boolean stillPlaying = true;      // Controls the game loop.
     public static boolean moved = false;            // Determines whether or not to print game information
@@ -18,6 +18,7 @@ public class Game {
     public static int[][]  nav;                     // An uninitialized array of type int int.
     public static int moves = 1;                    // Counter of the player's moves.
     public static int score = 5;                    // Tracker of the player's score.
+    public static int enemyCount = 200;             // Change this to increase/decrease difficulty
     public static int totalPower = 0;               // Keeps track of the total power the player has / damage they can do
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
@@ -76,10 +77,6 @@ public class Game {
         item0.setName("map");
         item0.setDesc("There is a map available for pickup.");
 
-        Item item1 = new Item(1);
-        item1.setName("intel");
-        item1.setDesc("There is enemy intelligence available for pickup.");
-
         Item item2 = new Item(2);
         item2.setName("gun");
         item2.setDesc("There is an assault rifle available for pickup.");
@@ -96,7 +93,6 @@ public class Game {
         //array of all items in game
         items = new Item[5];
         items[0] = item0; //map
-        items[1] = item1; //intel
         items[2] = item2; //gun
         items[3] = item3; //allies
         items[4] = item4; //blue jello
@@ -109,10 +105,8 @@ public class Game {
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
         loc0.setLookDesc("You have entered the Wraith's base. There are " +loc0.getNumberOfInhabitants() + " Wraith soldiers in front of you.\n" +
-                "In the distance you see a Hive Ship with the intel you need to retrieve.\n");
-        loc0.setHasItem(true);
-        loc0.setHasItem(true);
-        loc0.setWhichItem(items[1]);
+                "In the distance you see a Hive Ship with the intel you need to retrieve.\n" +
+                "If you think you are strong enough you can begin your attack");
         loc0.setInhabitants("Wraith");
         loc0.setNumberOfInhabitants(200);
 
@@ -126,7 +120,6 @@ public class Game {
         OffWorld loc2 = new OffWorld(2);
         loc2.setName("Village");
         loc2.setDesc("You are in a village");
-        loc2.setHasItem(true);
         loc2.setHasItem(true);
         loc2.setWhichItem(items[3]);
         loc2.setLookDesc("You have gated to a friendly planet. The Athosians camp is in front of you. \n" +
@@ -157,7 +150,6 @@ public class Game {
         loc5.setLookDesc("You have entered the armory. It is stocked with Assault Rifles, P90's, M9's, and C4. There are targets setup for practice. \n" +
                 "Lt. Colonel John Shepard is practicing with Major Lorne.");
         loc5.setHasItem(true);
-        loc5.setHasItem(true);
         loc5.setWhichItem(items[2]);
 
         Locale loc6 = new Locale(6);
@@ -166,22 +158,24 @@ public class Game {
         loc6.setLookDesc("Against logic you have entered the sleeping quarters of Ronan Dex. \n" +
                 "There is some sort of animal rug on the floor, along with paintings of Sateda. Ronan is sleeping on his bed, better hope he doesn't wake up.");
 
-        Locale loc7 = new Locale(7);
-        loc7.setName("McKay Lab");
-        loc7.setDesc("You are in Dr. Mckay\'s Lab");
-        loc7.setLookDesc("You have entered Dr. Rodney Mckay's Laboratory. You look around and see rows of computer hardware\n" +
+        Locale loc7 = new Locale(8);
+        loc7.setName("Cafe");
+        loc7.setDesc("You are in the cafe");
+        loc7.setLookDesc("You have entered the cafe. Many Atlantis personal are eating here. Today they are serving blue jello and Salisbury Steak");
+        loc7.setHasItem(true);
+        loc7.setWhichItem(items[4]);
+
+        Locale loc8 = new Locale(8);
+        loc8.setName("McKay Lab");
+        loc8.setDesc("You are in Dr. Mckay\'s Lab");
+        loc8.setLookDesc("You have entered Dr. Rodney Mckay's Laboratory. You look around and see rows of computer hardware\n" +
                 "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a large\n" +
                 "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.\n" +
                 "Mckay's laptop is on his desk. There's a note on it, it says if you can guess my password you will get a reward. \n" +
                 "Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it. \n" +
                 "To guess, type Guess Password, enter your guess after the prompt.");
 
-        Locale loc8 = new Locale(8);
-        loc8.setName("Cafe");
-        loc8.setDesc("You are in the cafe");
-        loc8.setLookDesc("You have entered the cafe. Many Atlantis personal are eating here. Today they are serving blue jello and Salisbury Steak");
-        loc8.setHasItem(true);
-        loc8.setWhichItem(items[4]);
+
 
 
 
@@ -194,8 +188,8 @@ public class Game {
         locations[4] = loc4; // "Gateroom"
         locations[5] = loc5; // "Armory"
         locations[6] = loc6; // "Ronan Quarter"
-        locations[7] = loc7; // "McKay Lab"
-        locations[8] = loc8; // "Cafe"
+        locations[7] = loc7; // "Cafe"
+        locations[8] = loc8; // "McKay Lab"
 
         if (DEBUGGING) {
             System.out.println("All game locations:");
@@ -206,13 +200,13 @@ public class Game {
         nav = new int[][] {
                                  /* N   S   E   W */
                                  /* 0   1   2   3 */
-         /* nav[0] for loc 0 */  { -1,  3,  1, -1 },
+         /* nav[0] for loc 0 */  { -1, -1,  1, -1 },
          /* nav[1] for loc 1 */  { -1,  4,  2,  0 },
-         /* nav[2] for loc 2 */  { -1,  5, -1,  1 },
-         /* nav[0] for loc 3 */  {  0,  6,  4, -1 },
+         /* nav[2] for loc 2 */  { -1, -1, -1,  1 },
+         /* nav[0] for loc 3 */  { -1, -1,  4, -1 },
          /* nav[1] for loc 4 */  {  1,  7,  5,  3 },
-         /* nav[2] for loc 5 */  {  2,  8, -1,  4 },
-         /* nav[0] for loc 6 */  {  3, -1,  7, -1 },
+         /* nav[2] for loc 5 */  { -1,  8, -1,  4 },
+         /* nav[0] for loc 6 */  { -1, -1,  7, -1 },
          /* nav[1] for loc 7 */  {  4, -1,  8,  6 },
          /* nav[2] for loc 8 */  {  5, -1, -1,  7 },
 
@@ -267,6 +261,8 @@ public class Game {
     private static void updateDisplay() {
         //System.out.println(locations[currentLocale].getName());
 
+        System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + score / moves + ", coins: " + coins + "] ");
+        System.out.println();
         if(locations[currentLocale].getHasItem() == true && locations[currentLocale].getHasVisited() == false){
             System.out.println(locations[currentLocale].getLookDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
         }
@@ -294,14 +290,30 @@ public class Game {
             System.out.print("West ");
         }
         System.out.println();
-        System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + score / moves + ", coins: " + coins + "] ");
-        System.out.println();
         buying = false;
         //gives the player 5 points the first time they visit a location
         if(locations[currentLocale].getHasVisited() == false){
             score+=5;
             locations[currentLocale].setHasVisited(true);
+        }else
+        if(currentLocale == 0 && allies == true) {
+            System.out.println("You and your allies have gated in, the enemy troops have spotted you. You can either begin your attack or gate back.");
+            System.out.println("Would you like to attack? Yes, or no?");
+            getCommand();
+            if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
+                attack();
+            }
+            else{
+                currentLocale = 1;
+                updateDisplay();
+                System.out.println("You have gated back. When you are ready to attack, travel to the enemy base again.");
+            }
+
         }
+        else if(currentLocale == 0 && allies == false) {
+            System.out.println("Without allies you don't stand a chance. Come back when you have gained allies");
+        }
+
     }
 
     private static void getCommand(){
@@ -338,9 +350,9 @@ public class Game {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) {
             help();
-        } else if ( currentLocale == 7 && buying == true) {
+        } else if ( currentLocale == 8 && buying == true) {
             shop();
-        } else if ( currentLocale == 7 && guessing == true) {
+        } else if ( currentLocale == 8 && guessing == true) {
             guessPassword();
         } else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
@@ -360,7 +372,7 @@ public class Game {
     }
 
     private static void password() {
-        if(currentLocale == 7){
+        if(currentLocale == 8){
             System.out.println("Laptop Login");
             System.out.println("Username: MeredithMcKay ");
             System.out.println("Password: ");
@@ -449,8 +461,8 @@ public class Game {
                     jelloCheck = true;
                     System.out.println("You do have blue jello!");
                     System.out.println("We will fight on your side.");
-                    inventory[i] = null;
                     System.out.println("You have gained the allies necessary to fight the Wraith");
+                    totalPower += 100;
                 }
             }
             if(jelloCheck == false){
@@ -500,7 +512,7 @@ public class Game {
     }
 
     private static void buyItems() {
-        if(currentLocale == 7){
+        if(currentLocale == 8){
             System.out.println("Welcome to the Magick Shoppe protoype created by Dr. Rodney McKay");
             System.out.println("These are the items available for purchase: ");
             System.out.println(magicItems.Shop());
@@ -516,6 +528,20 @@ public class Game {
         System.out.println(locations[currentLocale].getLookDesc());
     }
 
+    private static void attack() {
+        System.out.println("You have begun your assault on the Wraith Base ");
+        if(totalPower > enemyCount){
+            System.out.println("You have defeated the enemy troops and captured vital intelligence. Because of the victory Atlantis will remain safe.");
+            quit();
+        }
+        else {
+            System.out.println("The enemy forces were to strong, and you did not have good enough items.");
+            System.out.println("In the aftermath of the battle the Wraith found you barely alive. They have taken \n +" +
+                               "you to michael to be experimented on. Death would've been better.");
+            quit();
+        }
+    }
+
     private static void showMap() {
         boolean hasMap = false;
         for(int i=0; i<inventoryCounter; i++){
@@ -529,109 +555,127 @@ public class Game {
                 System.out.println(" _____________________________");
                 System.out.println("|    *    |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|_________|_________|");
             }
             if(currentLocale == 1){
                 System.out.println(" _____________________________");
                 System.out.println("|         |    *    |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|_________|_________|");
             }
             if(currentLocale == 2){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |    *    |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|_________|_________|");
             }
             if(currentLocale == 3){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|____*____|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office* |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|_________|_________|");
             }
             if(currentLocale == 4){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |    *    |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |    *    | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|_________|_________|");
             }
             if(currentLocale == 5){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |    *    |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |    *    |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|_________|_________|");
             }
             if(currentLocale == 6){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|____*____|_________|_________|");
             }
             if(currentLocale == 7){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |         |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
                 System.out.println("|_________|____*____|_________|");
             }
             if(currentLocale == 8){
                 System.out.println(" _____________________________");
                 System.out.println("|         |         |         |");
                 System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Carter's |         |         |");
-                System.out.println("| Office  |Gateroom | Armory  |");
-                System.out.println("|_________|_________|_________|");
-                System.out.println("|Ronan's  |McKay's  |    *    |");
-                System.out.println("|Quarters |   Lab   |The Cafe |");
-                System.out.println("|_________|_________|_________|");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|Carter's |Gateroom |         |");
+                System.out.println("| Office  |         | Armory  |");
+                System.out.println("|xxxxxxxxx|_________|_________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
+                System.out.println("|_________|_________|____*____|");
             }
         }
         else {

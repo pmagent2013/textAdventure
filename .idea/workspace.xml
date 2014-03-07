@@ -67,7 +67,7 @@
       <file leaf-file-name="Game.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="142" column="82" selection-start="6731" selection-end="6731" vertical-scroll-proportion="-4.974359" vertical-offset="5712" max-vertical-offset="11050">
+            <state line="642" column="70" selection-start="30392" selection-end="30392" vertical-scroll-proportion="0.6546311" vertical-offset="10497" max-vertical-offset="11798">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -78,7 +78,7 @@
       <file leaf-file-name="MagicItemsList.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MagicItemsList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1292">
+            <state line="10" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1564">
               <folding />
             </state>
           </provider>
@@ -87,11 +87,8 @@
       <file leaf-file-name="ListItem.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ListItem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="4" selection-start="648" selection-end="771" vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="952">
-              <folding>
-                <element signature="e#418#419#0" expanded="true" />
-                <element signature="e#445#446#0" expanded="true" />
-              </folding>
+            <state line="39" column="4" selection-start="648" selection-end="771" vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1258">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -99,11 +96,8 @@
       <file leaf-file-name="Item.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Item.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="918">
-              <folding>
-                <element signature="e#448#449#0" expanded="true" />
-                <element signature="e#488#489#0" expanded="true" />
-              </folding>
+            <state line="60" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="1190">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -111,8 +105,10 @@
       <file leaf-file-name="Locale.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Locale.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="1360">
-              <folding />
+            <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="33" max-vertical-offset="952">
+              <folding>
+                <element signature="e#1020#1021#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -120,7 +116,7 @@
       <file leaf-file-name="OffWorld.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/OffWorld.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="0" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="697">
+            <state line="31" column="0" selection-start="625" selection-end="625" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
               <folding />
             </state>
           </provider>
@@ -140,10 +136,10 @@
         <option value="$PROJECT_DIR$/src/Map.java" />
         <option value="$PROJECT_DIR$/src/MagickItemShoppe.java" />
         <option value="$PROJECT_DIR$/src/Locale.java" />
-        <option value="$PROJECT_DIR$/src/OffWorld.java" />
         <option value="$PROJECT_DIR$/src/MagicItemsList.java" />
         <option value="$PROJECT_DIR$/src/ListItem.java" />
         <option value="$PROJECT_DIR$/src/Item.java" />
+        <option value="$PROJECT_DIR$/src/OffWorld.java" />
         <option value="$PROJECT_DIR$/src/Game.java" />
       </list>
     </option>
@@ -180,6 +176,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -215,7 +212,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -428,6 +424,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32910052" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27089947" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
@@ -443,7 +440,6 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27089947" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
@@ -471,6 +467,98 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Game.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="77" selection-start="5210" selection-end="5210" vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="11067">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MagicItemsList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1564">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ListItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="4" selection-start="648" selection-end="771" vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1258">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="1190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Locale.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="1360">
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OffWorld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="0" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="697">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="77" selection-start="5210" selection-end="5210" vertical-scroll-proportion="0.0" vertical-offset="1683" max-vertical-offset="11067">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MagicItemsList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1564">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ListItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="4" selection-start="648" selection-end="771" vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1258">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="1190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Locale.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="1360">
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OffWorld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="0" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="697">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="44" selection-start="2241" selection-end="2241" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="11152">
           <folding>
             <element signature="imports" expanded="true" />
@@ -488,27 +576,23 @@
     <entry file="file://$PROJECT_DIR$/src/ListItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="0" selection-start="420" selection-end="420" vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="1088">
-          <folding>
-            <element signature="e#418#419#0" expanded="true" />
-            <element signature="e#445#446#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="0" selection-start="450" selection-end="450" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1054">
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="1360">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -538,27 +622,23 @@
     <entry file="file://$PROJECT_DIR$/src/ListItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="0" selection-start="420" selection-end="420" vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="1088">
-          <folding>
-            <element signature="e#418#419#0" expanded="true" />
-            <element signature="e#445#446#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="0" selection-start="450" selection-end="450" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1054">
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="1360">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -581,27 +661,23 @@
     <entry file="file://$PROJECT_DIR$/src/ListItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="40" column="63" selection-start="777" selection-end="777" vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="1020">
-          <folding>
-            <element signature="e#418#419#0" expanded="true" />
-            <element signature="e#445#446#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="0" selection-start="575" selection-end="575" vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="1054">
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="23" selection-start="1122" selection-end="1177" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="1224">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -617,17 +693,16 @@
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="0" selection-start="575" selection-end="575" vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="1054">
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="23" selection-start="1122" selection-end="1177" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="1224">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -643,17 +718,16 @@
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="39" column="34" selection-start="822" selection-end="822" vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1054">
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="58" column="1" selection-start="1153" selection-end="1153" vertical-scroll-proportion="0.0" vertical-offset="986" max-vertical-offset="1088">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -669,17 +743,16 @@
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="39" selection-start="615" selection-end="615" vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1054">
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="58" column="1" selection-start="1153" selection-end="1153" vertical-scroll-proportion="0.0" vertical-offset="986" max-vertical-offset="1088">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -695,7 +768,9 @@
     <entry file="file://$PROJECT_DIR$/src/Locale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="0" selection-start="216" selection-end="216" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="969">
-          <folding />
+          <folding>
+            <element signature="e#1020#1021#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -706,9 +781,7 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.7.0_17/src.zip!/java/io/PrintStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="665" column="0" selection-start="23421" selection-end="23421" vertical-scroll-proportion="0.0" vertical-offset="10666" max-vertical-offset="18836">
-          <folding />
-        </state>
+        <state line="665" column="0" selection-start="23421" selection-end="23421" vertical-scroll-proportion="0.0" vertical-offset="10666" max-vertical-offset="18836" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.7.0_17/src.zip!/java/lang/AbstractStringBuilder.java">
@@ -721,20 +794,6 @@
         <state line="85" column="0" selection-start="2815" selection-end="2815" vertical-scroll-proportion="0.0" vertical-offset="874" max-vertical-offset="7140" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Locale.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="466" max-vertical-offset="1088">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/OffWorld.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="0" selection-start="630" selection-end="630" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MagicItemsList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="26" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1292">
@@ -745,26 +804,36 @@
     <entry file="file://$PROJECT_DIR$/src/ListItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="39" column="4" selection-start="648" selection-end="771" vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="952">
-          <folding>
-            <element signature="e#418#419#0" expanded="true" />
-            <element signature="e#445#446#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="0" selection-start="1231" selection-end="1231" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="918">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Locale.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="0" selection-start="990" selection-end="990" vertical-scroll-proportion="0.0" vertical-offset="466" max-vertical-offset="1088">
           <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
+            <element signature="e#1020#1021#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OffWorld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="0" selection-start="625" selection-end="625" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="82" selection-start="6731" selection-end="6731" vertical-scroll-proportion="-4.974359" vertical-offset="5712" max-vertical-offset="11050">
+        <state line="642" column="70" selection-start="30392" selection-end="30392" vertical-scroll-proportion="0.6546311" vertical-offset="10497" max-vertical-offset="11798">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
