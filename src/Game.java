@@ -234,7 +234,7 @@ public class Game {
         item2.setName("ZPM");
         item2.setDesc("An ancient power source that extracts vacuum energy from an artificial region of subspace-time until it reaches maximum entropy");
         item2.setCost(200);
-        item2.setPower(110);
+        item2.setPower(120);
 
         ListItem item3 = new ListItem();
         item3.setName("Ancient Personal Shield");
@@ -254,11 +254,25 @@ public class Game {
         item5.setCost(150);
         item5.setPower(80);
 
+        ListItem item6 = new ListItem();
+        item6.setName("Lantean Pistol");
+        item6.setDesc("A pistol made by the Ancients");
+        item6.setCost(5);
+        item6.setPower(1);
+
+        ListItem item7 = new ListItem();
+        item7.setName("Mini Drones");
+        item7.setDesc("Tiny automated drones that rip through enemies");
+        item7.setCost(50);
+        item7.setPower(25);
+
         magicItems.add(item1);
         magicItems.add(item2);
         magicItems.add(item3);
         magicItems.add(item4);
         magicItems.add(item5);
+        magicItems.add(item6);
+        magicItems.add(item7);
     }
 
     private static void updateDisplay() {
@@ -463,7 +477,7 @@ public class Game {
         while (currentItem != null) {
             if(command.equalsIgnoreCase(currentItem.getName())){ //looks for item
                 if(coins >= currentItem.getCost()){ //checks for enough coins
-                    System.out.println("You have purchased a " + currentItem.getName());
+                    System.out.println("You have purchased " + currentItem.getName());
                     System.out.println("Thank you for testing out Dr. McKays's Prototype Magick Shoppe. Please come again. ");
                     coins-=currentItem.getCost(); //subtracts coins
                     boughtSomething = true;
