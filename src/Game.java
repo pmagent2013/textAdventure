@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Game {
 
     // Globals
-    public static final boolean DEBUGGING = false;   // Debugging flag.
+    public static final boolean DEBUGGING = false;  // Debugging flag.
     public static final int MAX_LOCALES = 9;        // Total number of rooms/locations we have in the game.
     public static int currentLocale = 4;            // Player starts in locale 4.
     public static String command;                   // What the player types as he or she plays the game.
@@ -16,13 +16,13 @@ public class Game {
     public static boolean allies = false;           // Determines if the player has successfully gained allies
     public static Locale[] locations;               // An uninitialized array of type Locale. See init() for initialization.
     public static int[][]  nav;                     // An uninitialized array of type int int.
-    public static int moves = 1;                    // Counter of the player's moves.
-    public static int score = 5;                    // Tracker of the player's score.
-    public static int enemyCount = 200;             // Change this to increase/decrease difficulty
+    public static double moves = 1;                 // Counter of the player's moves.
+    public static double score = 5;                 // Tracker of the player's score.
+    public static int enemyCount = 180;             // Change this to increase/decrease difficulty
     public static int totalPower = 0;               // Keeps track of the total power the player has / damage they can do
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
-    public static ArrayList<ListItem> magicItemsInventory = new ArrayList<ListItem>();
+    public static ArrayList<ListItem> magicItemsInventory = new ArrayList<ListItem>(); //An arrayList to store Magic Items bought by the player
     public static int inventoryCounter = 0;         // keeps track of # of items in inventory
     public static int coins = 100;                  // keeps track of coins used to buy items in magick shoppe
     public static int cheaterCounter = 0;           //used in case the player decides to mine for coins for too long
@@ -37,7 +37,6 @@ public class Game {
                 System.out.println(i + ":" + args[i]);
             }
         }
-
         // Set starting locale, if it was provided as a command line parameter.
         if (args.length > 0) {
             int startLocation = Integer.parseInt(args[0]);
@@ -51,12 +50,11 @@ public class Game {
         init();
         updateDisplay();
 
-
         // Game Loop
         while (stillPlaying) {
             getCommand();
             navigate();
-            if(moved == true){
+            if(moved == true){ //Can simplify to just if(moved), but i believe this makes it easier to read quickly
                 updateDisplay();
             }
             moved = false;
@@ -65,7 +63,6 @@ public class Game {
         // We're done. Thank the player and exit.
         System.out.println("Thank you for playing.");
     }
-
 
     private static void init() {
         // Initialize any uninitialized globals.
@@ -77,7 +74,10 @@ public class Game {
         item0.setName("map");
         item0.setDesc("There is a map available for pickup.");
 
-        //todo: add item to replace item 1
+        Item item1 = new Item(1);
+        item1.setName("Mckay prototype");
+        item1.setDesc("There is one of Mckay's prototypes available for pickup.");
+        item1.setPower(10);
 
         Item item2 = new Item(2);
         item2.setName("gun");
@@ -95,22 +95,21 @@ public class Game {
         //array of all items in game
         items = new Item[5];
         items[0] = item0; //map
+        items[1] = item1; //prototype
         items[2] = item2; //gun
         items[3] = item3; //allies
         items[4] = item4; //blue jello
-
         inventory = new Item[5]; //creates the array to store items when the player picks them up
-
 
         // Set up the location instances of the Locale class.
         OffWorld loc0 = new OffWorld(0);
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
+        loc0.setInhabitants("Wraith");
+        loc0.setNumberOfInhabitants(enemyCount);
         loc0.setLookDesc("You have entered the Wraith's base. There are " +loc0.getNumberOfInhabitants() + " Wraith soldiers in front of you.\n" +
                 "In the distance you see a Hive Ship with the intel you need to retrieve.\n" +
                 "If you think you are strong enough you can begin your attack");
-        loc0.setInhabitants("Wraith");
-        loc0.setNumberOfInhabitants(200);
 
         OffWorld loc1 = new OffWorld(1);
         loc1.setName("Offworld");
@@ -160,7 +159,7 @@ public class Game {
         loc6.setLookDesc("Against logic you have entered the sleeping quarters of Ronan Dex. \n" +
                 "There is some sort of animal rug on the floor, along with paintings of Sateda. Ronan is sleeping on his bed, better hope he doesn't wake up.");
 
-        Locale loc7 = new Locale(8);
+        Locale loc7 = new Locale(7);
         loc7.setName("Cafe");
         loc7.setDesc("You are in the cafe");
         loc7.setLookDesc("You have entered the cafe. Many Atlantis personal are eating here. Today they are serving blue jello and Salisbury Steak");
@@ -174,12 +173,9 @@ public class Game {
                 "and monitors. The tables are covered with random parts, and McKay's lunch. On the far wall you see a large\n" +
                 "machine with the name Magick Shoppe Prototype on it. The description reads: type buy to purchase items using coins.\n" +
                 "Mckay's laptop is on his desk. There's a note on it, it says if you can guess my password you will get a reward. \n" +
-                "Here's a hint: the birth years of the three smartest scientists and the answer to the question of life, the universe, and everything in it. \n" +
                 "To guess, type Guess Password, enter your guess after the prompt.");
-
-
-
-
+        loc8.setHasItem(true);
+        loc8.setWhichItem(items[1]);
 
         // Set up the location array.
         locations = new Locale[9];
@@ -276,9 +272,11 @@ public class Game {
     }
 
     private static void updateDisplay() {
-        //System.out.println(locations[currentLocale].getName());
-
-        System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + score / moves + ", coins: " + coins + "] ");
+        //To limit number of decimal places in the achievement ratio
+        double achievementRatio;
+        achievementRatio = score/moves;
+        achievementRatio = (double)Math.round(achievementRatio * 100) / 100; //Stack Overflow
+        System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + achievementRatio + ", coins: " + coins + ", power: " + totalPower + "] ");
         System.out.println();
         if(moves -1!= 0){
             if(locations[currentLocale].getHasItem() == true && locations[currentLocale].getHasVisited() == false){
@@ -313,7 +311,7 @@ public class Game {
             if(locations[currentLocale].getHasVisited() == false){
                 score+=5;
                 locations[currentLocale].setHasVisited(true);
-            }else
+            }
 
             //code for the end game
             if(currentLocale == 0 && allies == true) { //Player can only attack if they have gained allies
@@ -440,7 +438,8 @@ public class Game {
             if(command.equalsIgnoreCase("16431879196842")){
                 System.out.println("You have cracked the password, Damn McKay is arrogant.");
                 System.out.println("Your reward is 300 coins.");
-                coins += 300;
+                coins += 300; //gives 300 coins for corret guess
+                score += 10; //also give points as reward
 
             }
             else {
@@ -483,6 +482,7 @@ public class Game {
                     boughtSomething = true;
                     magicItemsInventory.add(currentItem); //adds item to inventory
                     totalPower += currentItem.getPower(); //adds to players power
+                    score += 2;                           //gives player some points for buying items
                 }
                 else{
                     System.out.println("McKay set the price too high, you don't have enough coins to afford this item."); //if player doesn't have enough coins
@@ -518,7 +518,7 @@ public class Game {
     private static void pickup() {
         if(locations[currentLocale].getHasItem() == true && currentLocale == 2){ //a check for gaining allies
             boolean jelloCheck = false;
-            System.out.println("The Athosian leaders and have discussed coming to war with you.");
+            System.out.println("The Athosian leaders have discussed coming to war with you.");
             System.out.println("They will send soldiers to battle with you in exchange for blue jello.");
             System.out.println("Do you have blue jello with you?");
             //checks for jello in inventory
@@ -788,6 +788,30 @@ public class Game {
         }
         else{
             System.out.println("There is no one here sleeping to be woken up.");
+        }
+    }
+
+    private static void talk() {
+        if(currentLocale == 0){
+            System.out.println("The Wraith aren't much for talking. They prefer sucking the life out of you.");
+        }
+        if(currentLocale == 2){
+            System.out.println("The Athosian leaders comes over and tells you that he loves blue jello.");
+        }
+        else if(currentLocale == 3){
+            System.out.println("Were you just picturing me in a bikini Major Young?");
+        }
+        else if(currentLocale == 5){
+            System.out.println("Shepard asks you to go golfing with him, Lorne asks you to paint with him. You walk away, quickly.");
+        }
+        else if(currentLocale == 6){
+            System.out.println("You're smart enough not to talk to Ronan while he's sleeping.");
+        }
+        else if(currentLocale == 8){
+            System.out.println("Zelenka is muttering to himself in Czech. No point trying to talk to him.");
+        }
+        else{
+            System.out.println("There is no one here to talk to your sorry ass.");
         }
     }
 
