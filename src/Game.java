@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,8 +16,7 @@ public class Game {
     public static boolean buying = false;           // Determines if the player is trying to buy an item
     public static boolean guessing = false;         // Determines if the player is trying to guess the password
     public static boolean allies = false;           // Determines if the player has successfully gained allies
-    public static Locale[] locations;               // An uninitialized array of type Locale. See init() for initialization.
-    public static int[][]  nav;                     // An uninitialized array of type int int.
+    public static boolean inJumper = false;         // Determines if the player is in the Jumper
     public static double moves = 1;                 // Counter of the player's moves.
     public static double score = 5;                 // Tracker of the player's score.
     public static int enemyCount = 180;             // Change this to increase/decrease difficulty
@@ -28,6 +29,10 @@ public class Game {
     public static int cheaterCounter = 0;           //used in case the player decides to mine for coins for too long
     public static int guessCounter = 5;             //ued to keep track of guesses for password
     public static MagicItemsList magicItems  = new MagicItemsList();
+    public static LocaleList localeList  = new LocaleList();
+
+
+
 
     public static void main(String[] args) {
         if (DEBUGGING) {
@@ -54,7 +59,7 @@ public class Game {
         while (stillPlaying) {
             getCommand();
             navigate();
-            if(moved == true){ //Can simplify to just if(moved), but i believe this makes it easier to read quickly
+            if(moved){ //Can simplify to just if(moved), but i believe this makes it easier to read quickly
                 updateDisplay();
             }
             moved = false;
@@ -92,16 +97,32 @@ public class Game {
         item4.setName("blue jello");
         item4.setDesc("There is blue jello available for pickup.");
 
+        Item item5 = new Item(5);
+        item5.setName("gate addresses");
+        item5.setDesc("There is a list of gate addresses available for pickup.");
+
         //array of all items in game
-        items = new Item[5];
+        items = new Item[6];
         items[0] = item0; //map
         items[1] = item1; //prototype
         items[2] = item2; //gun
         items[3] = item3; //allies
         items[4] = item4; //blue jello
+        items[5] = item5; //gate addresses
         inventory = new Item[5]; //creates the array to store items when the player picks them up
 
-        // Set up the location instances of the Locale class.
+        createLocales();
+        createMagicItems(); //Creates the items that player can buy from McKay's Machine
+    }
+
+
+    private static void createLocales() {
+        // Create the list manager for our magic items.
+        localeList.setName("List of Locales");
+        localeList.setDesc("These are the locales the player can navigate to.");
+
+
+        // Create some Locales and put them in the list.
         OffWorld loc0 = new OffWorld(0);
         loc0.setName("Enemy Base");
         loc0.setDesc("You have entered the enemy base");
@@ -135,6 +156,8 @@ public class Game {
         loc3.setLookDesc("You walk into carters office. She's laying on her table in a skimpy bikini, waiting for you. \n" +
                 "Whoa. Calm down there dream boy. Enough with the fantasy. \n"+
                 "Carter is sitting at her desk, she is reviewing mission files.");
+        loc3.setHasItem(true);
+        loc3.setWhichItem(items[5]);
 
         Locale loc4 = new Locale(4);
         loc4.setName("Gateroom");
@@ -144,6 +167,7 @@ public class Game {
         loc4.setHasVisited(true);
         loc4.setHasItem(true);
         loc4.setWhichItem(items[0]);
+
 
         Locale loc5 = new Locale(5);
         loc5.setName("Armory");
@@ -177,42 +201,101 @@ public class Game {
         loc8.setHasItem(true);
         loc8.setWhichItem(items[1]);
 
-        // Set up the location array.
-        locations = new Locale[9];
-        locations[0] = loc0; // "Enemy Base"
-        locations[1] = loc1; // "OffWorld"
-        locations[2] = loc2; // "Village"
-        locations[3] = loc3; // "Colonel Carter Office"
-        locations[4] = loc4; // "Gateroom"
-        locations[5] = loc5; // "Armory"
-        locations[6] = loc6; // "Ronan Quarter"
-        locations[7] = loc7; // "Cafe"
-        locations[8] = loc8; // "McKay Lab"
+        Locale loc9 = new Locale(9);
+        loc9.setName("Jumper Bay");
+        loc9.setDesc("You are in the Jumper Bay");
+        loc9.setLookDesc("You have entered the Jumper Bay. You look around and see Puddle Jumpers all around the room. \n" +
+                         "A puddle Jumper is a small spacecraft created by the Ancients, it is small enough to fit through the stargate \n"+
+                         "You can use it to travel through the stargate or explore the planet.");
 
-        if (DEBUGGING) {
-            System.out.println("All game locations:");
-            for (int i = 0; i < locations.length; ++i) {
-                System.out.println(i + ":" + locations[i].toString());
-            }
-        }
-        nav = new int[][] {
-                                 /* N   S   E   W */
-                                 /* 0   1   2   3 */
-         /* nav[0] for loc 0 */  { -1, -1,  1, -1 },
-         /* nav[1] for loc 1 */  { -1,  4,  2,  0 },
-         /* nav[2] for loc 2 */  { -1, -1, -1,  1 },
-         /* nav[0] for loc 3 */  { -1, -1,  4, -1 },
-         /* nav[1] for loc 4 */  {  1,  7,  5,  3 },
-         /* nav[2] for loc 5 */  { -1,  8, -1,  4 },
-         /* nav[0] for loc 6 */  { -1, -1,  7, -1 },
-         /* nav[1] for loc 7 */  {  4, -1,  8,  6 },
-         /* nav[2] for loc 8 */  {  5, -1, -1,  7 },
+        Locale loc10 = new Locale(10);
+        loc10.setName("Midway Space Station");
+        loc10.setDesc("You are at the Midway Space Station");
+        loc10.setLookDesc("You have arrived at the Midway Space Station. Halfway point between Pegasus and the Milky Way Galaxies. \n" +
+                "Construction has not yet been finished so you must remain in your jumper. \n"+
+                "From here you can gate to Stargate Command on Earth, or gate back to Atlantis.");
 
-        };
-        createMagicItems();
+        Locale loc11 = new Locale(9);
+        loc11.setName("Stargate Command");
+        loc11.setDesc("You are in Stargate Command");
+        loc11.setLookDesc("You have entered arrived at Stargate Command on Earth. \n" +
+                "General Hank Landry, and General O'Neill are standing there to great you.\n"+
+                "In case you have been compromised you will not be allowed to explore Stargate Command at this time.");
+
+        //set up the links for navigation
+        loc0.setGoNorth(null);
+        loc0.setGoEast(loc1);
+        loc0.setGoSouth(null);
+        loc0.setGoWest(null);
+
+        loc1.setGoToAthos(loc2);
+        loc1.setGoToWratih(loc0);
+        loc1.setGoToAtlantis(loc4);
+
+        loc2.setGoToBarren(loc1);
+        loc2.setGoToWratih(loc0);
+        loc2.setGoToAtlantis(loc4);
+
+        loc3.setGoNorth(null);
+        loc3.setGoEast(loc4);
+        loc3.setGoSouth(null);
+        loc3.setGoWest(null);
+
+        loc4.setGoNorth(loc1);
+        loc4.setGoEast(loc5);
+        loc4.setGoSouth(loc7);
+        loc4.setGoWest(loc3);
+        loc4.setGoToAthos(loc2);
+        loc4.setGoToBarren(loc1);
+        loc4.setGoToWratih(loc0);
+        loc4.setGoToMidway(loc10);
+
+        loc5.setGoNorth(null);
+        loc5.setGoEast(loc9);
+        loc5.setGoSouth(loc8);
+        loc5.setGoWest(loc4);
+
+        loc6.setGoNorth(null);
+        loc6.setGoEast(loc7);
+        loc6.setGoSouth(null);
+        loc6.setGoWest(null);
+
+        loc7.setGoNorth(loc4);
+        loc7.setGoEast(loc8);
+        loc7.setGoSouth(null);
+        loc7.setGoWest(loc6);
+
+        loc8.setGoNorth(loc5);
+        loc8.setGoEast(null);
+        loc8.setGoSouth(null);
+        loc8.setGoWest(loc7);
+
+        loc9.setGoNorth(null);
+        loc9.setGoEast(null);
+        loc9.setGoSouth(null);
+        loc9.setGoWest(loc5);
+
+        loc10.setGoToEarth(loc11);
+        loc10.setGoToAtlantisJumper(loc9);
+
+
+        localeList.add(loc0);
+        localeList.add(loc1);
+        localeList.add(loc2);
+        localeList.add(loc3);
+        localeList.add(loc4);
+        localeList.add(loc5);
+        localeList.add(loc6);
+        localeList.add(loc7);
+        localeList.add(loc8);
+        localeList.add(loc9);
+        localeList.add(loc10);
+        localeList.add(loc11);
+        localeList.setCurrent(loc4);
+
+
     }
 
-    //Creates the items that player can buy from McKay's Machine
     private static void createMagicItems() {
         // Create the list manager for our magic items.
         magicItems.setName("List of Magic Items");
@@ -262,6 +345,10 @@ public class Game {
         item7.setCost(50);
         item7.setPower(25);
 
+
+
+        final String fileName = "magicitems.txt";
+        readMagicItemsFromFile(fileName, magicItems);
         magicItems.add(item1);
         magicItems.add(item2);
         magicItems.add(item3);
@@ -269,6 +356,7 @@ public class Game {
         magicItems.add(item5);
         magicItems.add(item6);
         magicItems.add(item7);
+
     }
 
     private static void updateDisplay() {
@@ -279,42 +367,59 @@ public class Game {
         System.out.print("[Current progress: " + moves + " moves, score: " + score + ", achievement ratio: " + achievementRatio + ", coins: " + coins + ", power: " + totalPower + "] ");
         System.out.println();
         if(moves -1!= 0){
-            if(locations[currentLocale].getHasItem() == true && locations[currentLocale].getHasVisited() == false){
-                System.out.println(locations[currentLocale].getLookDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
+            if(localeList.getCurrent().getHasItem() && !localeList.getCurrent().getHasVisited()){
+                System.out.println(localeList.getCurrent().getLookDesc() + ". " + localeList.getCurrent().getWhichItem().getDesc());
             }
-            else if(locations[currentLocale].getHasVisited() == false){
-                System.out.println(locations[currentLocale].getLookDesc());
+            else if(!localeList.getCurrent().getHasVisited()){
+                System.out.println(localeList.getCurrent().getLookDesc());
             }
-            else if(locations[currentLocale].getHasItem() == true)
+            else if(localeList.getCurrent().getHasItem())
             {
-                System.out.println(locations[currentLocale].getDesc() + ". " + locations[currentLocale].getWhichItem().getDesc());
+                System.out.println(localeList.getCurrent().getDesc() + ". " + localeList.getCurrent().getWhichItem().getDesc());
             }
             else{
-                System.out.println(locations[currentLocale].getDesc());
+                System.out.println(localeList.getCurrent().getDesc());
             }
+
             System.out.print("From here the directions you can move are: ");
-            if(nav[currentLocale][0]!=-1){
+
+
+            if(localeList.getCurrent().getGoNorth() != null){
                 System.out.print("North ");
             }
-            if(nav[currentLocale][1]!=-1){
+            if(localeList.getCurrent().getGoSouth() != null){
                 System.out.print("South ");
             }
-            if(nav[currentLocale][2]!=-1){
+            if(localeList.getCurrent().getGoEast() != null){
                 System.out.print("East ");
             }
-            if(nav[currentLocale][3]!=-1){
+            if(localeList.getCurrent().getGoWest() != null){
                 System.out.print("West ");
             }
+            else{
+                System.out.print("Back through the stargate ");
+            }
+
             System.out.println();
             buying = false;
             //gives the player 5 points the first time they visit a location
-            if(locations[currentLocale].getHasVisited() == false){
+            if(!localeList.getCurrent().getHasVisited()){
                 score+=5;
-                locations[currentLocale].setHasVisited(true);
+                localeList.getCurrent().setHasVisited(true);
             }
 
+            if(currentLocale == 9){
+                puddleJumper();
+            }
+
+            if(currentLocale == 10){
+                midway();
+            }
+
+
+
             //code for the end game
-            if(currentLocale == 0 && allies == true) { //Player can only attack if they have gained allies
+            if(currentLocale == 0 && allies) { //Player can only attack if they have gained allies
                 System.out.println("You and your allies have gated in, the enemy troops have spotted you. You can either begin your attack or gate back.");
                 System.out.println("Would you like to attack? Yes, or no?"); //Gives player option to attack
                 getCommand();
@@ -328,7 +433,7 @@ public class Game {
                 }
 
             }
-            else if(currentLocale == 0 && allies == false) {
+            else if(currentLocale == 0 && !allies) {
                 System.out.println("Without allies you don't stand a chance. Come back when you have gained allies");
             }
         }
@@ -361,8 +466,8 @@ public class Game {
 
     //allows the player to move around the map
     private static void navigate() {
-        final int INVALID = -1;
-        int dir = INVALID;  // This will get set to a value > 0 if a direction command was entered.
+
+        int dir = -1;  // This will get set to a value > 0 if a direction command was entered.
 
         if (        command.equalsIgnoreCase("north") || command.equalsIgnoreCase("n") || command.equalsIgnoreCase("go north") || command.equalsIgnoreCase(" go n") ) { //go north
             dir = 0;
@@ -389,9 +494,9 @@ public class Game {
             quit();
         } else if ( command.equalsIgnoreCase("help")  || command.equalsIgnoreCase("h")) { //display available commands
             help();
-        } else if ( currentLocale == 8 && buying == true) { //buy prompt
+        } else if ( currentLocale == 8 && buying) { //buy prompt
             shop();
-        } else if ( currentLocale == 8 && guessing == true) { //guess prompt
+        } else if ( currentLocale == 8 && guessing) { //guess prompt
             guessPassword();
         //easter egg commands
         } else if (command.equalsIgnoreCase("kiss")) { //kiss someone
@@ -400,17 +505,81 @@ public class Game {
             dance();
         }else if (command.equalsIgnoreCase("wake") || command.equalsIgnoreCase("wake up") || command.equalsIgnoreCase("wakeup")) { //wake up Ronan
             wake();
+        }else if (command.equalsIgnoreCase("talk") || command.equalsIgnoreCase("t")) { //talk to people
+            talk();
         }else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
-        };
+        }
 
+        Locale newLocation = null;
+        Boolean hasAdresses = false;
+        for(int i=0; i<inventory.length; i++){
+            if(inventory[i] == items[5]){
+                hasAdresses = true;
+            }
+        }
         if (dir > -1) {   // This means a dir was set.
-            int newLocation = nav[currentLocale][dir];
+           if(currentLocale == 1 || currentLocale == 2 || (currentLocale == 4 && dir == 0) || currentLocale == 11){
+               if(hasAdresses){
+                   System.out.println("What address would you like to dial?");
+                   if(currentLocale != 11){
+                       if(currentLocale != 4){
+                       System.out.println("Atlantis");
+                       }
+                       System.out.println("Athos");
+                       System.out.println("Barren World");
+                       System.out.println("Wraith Base");
+                   }
+                   if(currentLocale == 11){
+                       System.out.println("Midway Space Station");
+                   }
+                   getCommand();
+                   System.out.println("The gate has been dialed, you step through the gate and you emerge at your destination");
+                   if(command.equalsIgnoreCase("Barren World")){
+                       currentLocale = 1;
+                       newLocation = localeList.getCurrent().getGoToBarren();
+                   }
+                   else if(command.equalsIgnoreCase("Athos")){
+                       currentLocale = 2;
+                       newLocation = localeList.getCurrent().getGoToAthos();
+                   }
+                   else if(command.equalsIgnoreCase("Wriath Base")){
+                       currentLocale = 0;
+                       newLocation = localeList.getCurrent().getGoToWratih();
+                   }
+                   else if(command.equalsIgnoreCase("Atlantis")){
+                       currentLocale = 4;
+                       newLocation = localeList.getCurrent().getGoToAtlantis();
+                   }
+                   else if(command.equalsIgnoreCase("Midway Space Station")){
+                       currentLocale = 10;
+                       newLocation = localeList.getCurrent().getGoToMidway();
+                   }
+
+               }
+               else{
+                   System.out.println("You cannot dial the gate without any gate addresses, find a list of gate addresses.");
+               }
+           }
+           else if(dir == 0){
+               newLocation = localeList.getCurrent().getGoNorth();
+           }
+           else if(dir == 1){
+               newLocation = localeList.getCurrent().getGoSouth();
+           }
+           else if(dir == 2){
+               newLocation = localeList.getCurrent().getGoEast();
+           }
+           else{
+               newLocation = localeList.getCurrent().getGoWest();
+           }
+
             //if the player can't go that way, tell them
-            if (newLocation == INVALID) {
+            if (newLocation == null) {
                 System.out.println("You cannot go that way.");
-            } else {
-                currentLocale = newLocation;
+            } else  {
+                localeList.setCurrent(newLocation);
+                currentLocale = localeList.getCurrent().getId();
                 moves = moves + 1;
                 moved=true;
 
@@ -438,7 +607,7 @@ public class Game {
             if(command.equalsIgnoreCase("16431879196842")){
                 System.out.println("You have cracked the password, Damn McKay is arrogant.");
                 System.out.println("Your reward is 300 coins.");
-                coins += 300; //gives 300 coins for corret guess
+                coins += 300; //gives 300 coins for correct guess
                 score += 10; //also give points as reward
 
             }
@@ -474,6 +643,8 @@ public class Game {
         ListItem currentItem = magicItems.getHead();
         Boolean boughtSomething = false;
         while (currentItem != null) {
+
+
             if(command.equalsIgnoreCase(currentItem.getName())){ //looks for item
                 if(coins >= currentItem.getCost()){ //checks for enough coins
                     System.out.println("You have purchased " + currentItem.getName());
@@ -494,7 +665,7 @@ public class Game {
             currentItem = currentItem.getNext();
         }
         buying = false;
-        if(boughtSomething == false){
+        if(!boughtSomething){
             System.out.println("That is not an item McKay has stocked the machine with. "); // if player typed unavailable item
         }
     }
@@ -516,7 +687,7 @@ public class Game {
 
     //allows the user to pickup items
     private static void pickup() {
-        if(locations[currentLocale].getHasItem() == true && currentLocale == 2){ //a check for gaining allies
+        if(localeList.getCurrent().getHasItem() && currentLocale == 2){ //a check for gaining allies
             boolean jelloCheck = false;
             System.out.println("The Athosian leaders have discussed coming to war with you.");
             System.out.println("They will send soldiers to battle with you in exchange for blue jello.");
@@ -532,18 +703,18 @@ public class Game {
                     totalPower += 100; //adds to power total
                 }
             }
-            if(jelloCheck == false){
+            if(!jelloCheck){
                 System.out.println("You don't have blue jello with you. You must get some before we join you.");
             }
         }
         //in all other locations, checks if there is an item available for pickup
-        else if(locations[currentLocale].getHasItem() == true){
-            inventory[inventoryCounter] = locations[currentLocale].getWhichItem(); //if there is an item, pick it up
+        else if(localeList.getCurrent().getHasItem()){
+            inventory[inventoryCounter] = localeList.getCurrent().getWhichItem(); //if there is an item, pick it up
             System.out.println("You have picked up a " + inventory[inventoryCounter].getName()); //tells player
             System.out.println("You also found 25 coins.");
             coins+=25; //give them coins as a bonus
-            totalPower += locations[currentLocale].getWhichItem().getPower(); //adds items power to players total
-            locations[currentLocale].setHasItem(false);
+            totalPower += localeList.getCurrent().getWhichItem().getPower(); //adds items power to players total
+            localeList.getCurrent().setHasItem(false);
             inventoryCounter++;
         }
         else{
@@ -583,7 +754,7 @@ public class Game {
 
     //If the player types look, provide them with the longer description of the current location
     private static void look() {
-        System.out.println(locations[currentLocale].getLookDesc());
+        System.out.println(localeList.getCurrent().getLookDesc());
     }
 
     //if the player is in the enemy base give them the option to attack
@@ -602,147 +773,7 @@ public class Game {
     }
 
     //Displays the map to help the player navigate
-    private static void showMap() {
-        boolean hasMap = false;
-        for(int i=0; i<inventoryCounter; i++){
-            if(inventory[i].getName() == "map"){
-                hasMap = true;
-            }
-        }
-        //Only shows the map if the player has picked it up
-        //Displays an indicator that will show what location the player is in
-        if(hasMap == true){
-            if(currentLocale == 0){
-                System.out.println(" _____________________________");
-                System.out.println("|    *    |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|_________|");
-            }
-            if(currentLocale == 1){
-                System.out.println(" _____________________________");
-                System.out.println("|         |    *    |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|_________|");
-            }
-            if(currentLocale == 2){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |    *    |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|_________|");
-            }
-            if(currentLocale == 3){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office* |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|_________|");
-            }
-            if(currentLocale == 4){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |    *    | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|_________|");
-            }
-            if(currentLocale == 5){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |    *    |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|_________|");
-            }
-            if(currentLocale == 6){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|____*____|_________|_________|");
-            }
-            if(currentLocale == 7){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|____*____|_________|");
-            }
-            if(currentLocale == 8){
-                System.out.println(" _____________________________");
-                System.out.println("|         |         |         |");
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|Carter's |Gateroom |         |");
-                System.out.println("| Office  |         | Armory  |");
-                System.out.println("|xxxxxxxxx|_________|_________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
-                System.out.println("|_________|_________|____*____|");
-            }
-        }
-        else {
-            System.out.println("You do not have the map.");
-        }
-    }
+
 
     private static void quit() {
         stillPlaying = false;
@@ -812,6 +843,182 @@ public class Game {
         }
         else{
             System.out.println("There is no one here to talk to your sorry ass.");
+        }
+    }
+
+    private static void puddleJumper(){
+        Boolean hasAdresses = false;
+        for(int i=0; i<inventory.length; i++){
+            if(inventory[i] == items[5]){
+                hasAdresses = true;
+            }
+        }
+        if(hasAdresses){
+            System.out.println("Would you like to enter a jumper?");
+            getCommand();
+            if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
+                inJumper = true;
+                System.out.println("What would you like to do?");
+                System.out.println("Go to the gateroom and travel through the stargate? Or Open the roof and go explore the planet?");
+                System.out.println("Type Gateroom or Explore");
+                getCommand();
+                if(command.equalsIgnoreCase("gateroom")){
+                    localeList.setCurrent(localeList.getCurrent().getGoWest().getGoWest());
+                    currentLocale = 4;
+                    System.out.println("The puddle jumper has been lowered into the gateroom. What address would you like to dial?");
+                    System.out.println("Midway Space Station");
+                    getCommand();
+                    System.out.println("The gate has been dialed, the puddle jumper enters the gate and you emerged at your destination");
+                    if(command.equalsIgnoreCase("Midway Space Station")){
+                        currentLocale = 10;
+                        localeList.setCurrent(localeList.getCurrent().getGoToMidway());
+                    }
+                    updateDisplay();
+
+                }
+                else if(command.equalsIgnoreCase("explore")){
+
+                }
+            }
+            else if(command.equalsIgnoreCase("no") || command.equalsIgnoreCase("n")){
+
+            }
+        }
+        else{
+            System.out.println("There is no point in entering the jumper without a list of gate addresses.");
+        }
+    }
+
+    private static void midway(){
+        System.out.println("Would you like to gate to Earth or Atlantis?");
+        System.out.println("Type Earth or Atlantis");
+        getCommand();
+        if(command.equalsIgnoreCase("earth")){
+            localeList.setCurrent(localeList.getCurrent().getGoToEarth());
+            currentLocale = 11;
+            System.out.println("You dial the gate and fly the puddle jumper into the wormhole.");
+        }
+        else if(command.equalsIgnoreCase("atlantis")){
+            localeList.setCurrent(localeList.getCurrent().getGoToAtlantisJumper());
+            currentLocale = 9;
+            System.out.println("You dial the gate and fly the puddle jumper into the wormhole.");
+            System.out.println("You arrive in the gateroom, you maneuver the jumper back to the jumper bay.");
+            inJumper = false;
+        }
+        updateDisplay();
+    }
+
+    private static void readMagicItemsFromFile(String fileName,
+                                               MagicItemsList lm) {
+        File myFile = new File(fileName);
+        try {
+            Scanner input = new Scanner(myFile);
+            while (input.hasNext()) {
+                // Read a line from the file.
+                String itemName = input.nextLine();
+
+                // Construct a new list item and set its attributes.
+                ListItem fileItem = new ListItem();
+                fileItem.setName(itemName);
+                fileItem.setCost(Math.round(Math.random() * 100));
+                fileItem.setPower((int)(fileItem.getCost())/2);
+                fileItem.setNext(null); // Still redundant. Still safe.
+
+                // Add the newly constructed item to the list.
+                lm.add(fileItem);
+            }
+            // Close the file.
+            input.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found. " + ex.toString());
+        }
+    }
+
+    private static void showMap() {
+        boolean hasMap = false;
+        for(int i=0; i<inventoryCounter; i++){
+            if(inventory[i].getName() == "map"){
+                hasMap = true;
+            }
+        }
+        //Only shows the map if the player has picked it up
+        //Displays an indicator that will show what location the player is in
+        if(hasMap){
+            if(currentLocale == 11){
+                System.out.println("You do not have clearance to have a map of the SGC");
+            }
+            else{
+                System.out.println(" _____________________________");
+
+            if(currentLocale == 0){
+                System.out.println("|    *    |         |         |");
+            }
+            if(currentLocale == 1){
+                System.out.println("|         |    *    |         |");
+            }
+            if(currentLocale == 2){
+                System.out.println("|         |         |    *    |");
+            }
+            if(currentLocale == 3 || currentLocale == 4 || currentLocale == 5 ||currentLocale == 6 || currentLocale == 7 || currentLocale == 8 || currentLocale == 9){
+                System.out.println("|         |         |         |");
+            }
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|__________");
+                System.out.println("|Carter's |Gateroom | Armory  |Jumper Bay|");
+
+            if(currentLocale == 3){
+                System.out.println("| Office* |         |         |          |");
+            }
+            if(currentLocale == 4){
+                System.out.println("| Office  |    *    |         |          |");
+            }
+            if(currentLocale == 5){
+                System.out.println("| Office  |         |    *    |          |");
+            }
+            if(currentLocale == 9){
+                System.out.println("| Office  |         |         |    *     |");
+            }
+            if(currentLocale == 0 || currentLocale == 1 || currentLocale == 2 ||currentLocale == 6 || currentLocale == 7 || currentLocale == 8){
+                System.out.println("| Office  |         |         |");
+            }
+                System.out.println("|xxxxxxxxx|_________|_________|__________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
+
+            if(currentLocale == 6){
+                System.out.println("|____*____|_________|_________|");
+            }
+            if(currentLocale == 7){
+                System.out.println("|_________|____*____|_________|");
+            }
+            if(currentLocale == 8){
+                System.out.println("|_________|_________|____*____|");
+            }
+            if(currentLocale == 0 || currentLocale == 1 || currentLocale == 2 ||currentLocale == 3 || currentLocale == 4 || currentLocale == 5 || currentLocale == 9){
+                System.out.println("|_________|_________|_________|");
+            }
+        }
+
+
+            /*  What map looks like
+                System.out.println(" _____________________________");
+                System.out.println("|         |         |         |");
+                System.out.println("|EnemyBase|Offworld | Village |");
+                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|__________");
+                System.out.println("|Carter's |Gateroom |         |Jumper Bay|");
+                System.out.println("| Office  |         | Armory  |          |");
+                System.out.println("|xxxxxxxxx|_________|_________|__________|");
+                System.out.println("|Ronan's  |         | McKay's |");
+                System.out.println("|Quarters |  Cafe   |   Lab   |");
+                System.out.println("|_________|_________|_________|");
+            */
+        }
+        else {
+            System.out.println("You do not have the map.");
         }
     }
 

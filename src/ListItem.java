@@ -30,10 +30,10 @@ public class ListItem {
         this.next = next;
     }
 
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 
@@ -61,7 +61,7 @@ public class ListItem {
 
     private String name;
     private String desc;
-    private int cost;
+    private double cost;
     private int power;
     private ListItem next = null;
 
