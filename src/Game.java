@@ -19,7 +19,7 @@ public class Game {
     public static boolean inJumper = false;         // Determines if the player is in the Jumper
     public static double moves = 1;                 // Counter of the player's moves.
     public static double score = 5;                 // Tracker of the player's score.
-    public static int enemyCount = 180;             // Change this to increase/decrease difficulty
+    public static int enemyCount = 210;             // Change this to increase/decrease difficulty
     public static int totalPower = 0;               // Keeps track of the total power the player has / damage they can do
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
@@ -877,11 +877,196 @@ public class Game {
 
                 }
                 else if(command.equalsIgnoreCase("explore")){
+                    System.out.println("The roof of the Jumper Bay retracts and you fly the jumper out. ");
+                    int currentRow = 3;
+                    int currentColumn = 7;
+                    boolean done = false;
+                    String[] jumperMapRow0 = new String[15];
+                    String[] jumperMapRow1 = new String[15];
+                    String[] jumperMapRow2 = new String[15];
+                    String[] jumperMapRow3 = new String[15];
+                    String[] jumperMapRow4 = new String[15];
+                    String[] jumperMapRow5 = new String[15];
+                    String[] jumperMapRow6 = new String[15];
+
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow0[i] = ".";
+                    }
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow1[i] = ".";
+                    }
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow2[i] = ".";
+                    }
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow3[i] = ".";
+                        jumperMapRow3[7] = "A";
+                    }
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow4[i] = ".";
+                    }
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow5[i] = ".";
+                    }
+                    for(int i =0; i< 14; i++){
+                        jumperMapRow6[i] = ".";
+                    }
+
+                    String[][] allRows = new String[7][15];
+                    allRows[0] = jumperMapRow0;
+                    allRows[1] = jumperMapRow1;
+                    allRows[2] = jumperMapRow2;
+                    allRows[3] = jumperMapRow3;
+                    allRows[4] = jumperMapRow4;
+                    allRows[5] = jumperMapRow5;
+                    allRows[6] = jumperMapRow6;
+
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow0[i]);
+                    }
+                    System.out.println(jumperMapRow0[5]);
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow1[i]);
+                    }
+                    System.out.println(jumperMapRow1[5]);
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow2[i]);
+                    }
+                    System.out.println(jumperMapRow2[5]);
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow3[i]);
+                    }
+                    System.out.println(jumperMapRow3[5]);
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow4[i]);
+                    }
+                    System.out.println(jumperMapRow4[5]);
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow5[i]);
+                    }
+                    System.out.println(jumperMapRow5[5]);
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow6[i]);
+                    }
+                    System.out.println(jumperMapRow6[5]);
+
+                    while(!done){
+                        getCommand();
+                        if(command.equalsIgnoreCase("n")){
+                            if(currentRow!=0){
+                                if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                                    allRows[currentRow][currentColumn] = "x";
+                                }
+                                allRows[currentRow-1][currentColumn] = "J";
+                                currentRow = currentRow-1;
+                            }
+                            else{
+                                System.out.println("You cannot go that way, you are too far from Atlantis");
+                            }
+
+                        }
+                        else if(command.equalsIgnoreCase("s")){
+                            if(currentRow!=6){
+                                if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                                    allRows[currentRow][currentColumn] = "x";
+                                }
+                                allRows[currentRow+1][currentColumn] = "J";
+                                currentRow = currentRow+1;
+                            }
+                            else{
+                                System.out.println("You cannot go that way, you are too far from Atlantis");
+                            }
+                        }
+                        else if(command.equalsIgnoreCase("e")){
+                            if(currentColumn!=13)
+                            {
+                                if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                                    allRows[currentRow][currentColumn] = "x";
+                                }
+                                allRows[currentRow][currentColumn+1] = "J";
+                                currentColumn = currentColumn+1;
+                            }
+                            else{
+                                System.out.println("You cannot go that way, you are too far from Atlantis");
+                            }
+
+                        }
+                        else if(command.equalsIgnoreCase("w")){
+                            if(currentColumn!=0)
+                            {
+                                if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                                    allRows[currentRow][currentColumn] = "x";
+                                }
+                                allRows[currentRow][currentColumn-1] = "J";
+                                currentColumn = currentColumn-1;
+                            }
+                            else{
+                                System.out.println("You cannot go that way, you are too far from Atlantis");
+                            }
+                        }
+
+                        if(allRows[currentRow][currentColumn] == allRows[0][12]){
+                            allRows[currentRow][currentColumn] = "M";
+                            System.out.println("You have found the mainland, you land the jumper and explore.");
+                            System.out.println("You discover a crashed alien satellite and search it and find an alien power core.");
+                            System.out.println("This will aid you in your fight with the Wraith.");
+                            totalPower += 10;
+                        }
+
+                        if(allRows[currentRow][currentColumn] == allRows[5][3]){
+                            allRows[currentRow][currentColumn] = "W";
+                            System.out.println("There is a very large whale in the ocean beneath you.");
+                        }
+
+                        if(allRows[currentRow][currentColumn] == allRows[5][9]){
+                            allRows[currentRow][currentColumn] = "O";
+                            System.out.println("There is an underwater drilling platform beneath the ocean. Perhaps this can be used on day.");
+                        }
+
+                        if(allRows[currentRow][currentColumn] == allRows[3][7]){
+                            System.out.println("You have successfully returned to Atlantis");
+                            updateDisplay();
+                        }
+
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow0[i]);
+                        }
+                        System.out.println();
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow1[i]);
+                        }
+                        System.out.println();
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow2[i]);
+                        }
+                        System.out.println();
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow3[i]);
+                        }
+                        System.out.println();
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow4[i]);
+                        }
+                        System.out.println();
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow5[i]);
+                        }
+                        System.out.println();
+                        for(int i= 0; i<14; i++){
+                            System.out.print(jumperMapRow6[i]);
+                        }
+                        System.out.println();
+                    }
+
+
 
                 }
             }
             else if(command.equalsIgnoreCase("no") || command.equalsIgnoreCase("n")){
-
+                System.out.println("Well, no point hanging around in here, back to the Armory.");
+                localeList.setCurrent(localeList.getCurrent().getGoWest());
+                currentLocale = 5;
+                updateDisplay();
             }
         }
         else{
@@ -950,55 +1135,55 @@ public class Game {
             else{
                 System.out.println(" _____________________________");
 
-            if(currentLocale == 0){
-                System.out.println("|    *    |         |         |");
-            }
-            if(currentLocale == 1){
-                System.out.println("|         |    *    |         |");
-            }
-            if(currentLocale == 2){
-                System.out.println("|         |         |    *    |");
-            }
-            if(currentLocale == 3 || currentLocale == 4 || currentLocale == 5 ||currentLocale == 6 || currentLocale == 7 || currentLocale == 8 || currentLocale == 9){
-                System.out.println("|         |         |         |");
-            }
-                System.out.println("|EnemyBase|Offworld | Village |");
-                System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
-                System.out.println("|xxxxxxxxx|         |xxxxxxxxx|__________");
-                System.out.println("|Carter's |Gateroom | Armory  |Jumper Bay|");
+                if(currentLocale == 0){
+                    System.out.println("|    *    |         |         |");
+                }
+                if(currentLocale == 1){
+                    System.out.println("|         |    *    |         |");
+                }
+                if(currentLocale == 2){
+                    System.out.println("|         |         |    *    |");
+                }
+                if(currentLocale == 3 || currentLocale == 4 || currentLocale == 5 ||currentLocale == 6 || currentLocale == 7 || currentLocale == 8 || currentLocale == 9){
+                    System.out.println("|         |         |         |");
+                }
+                    System.out.println("|EnemyBase|Offworld | Village |");
+                    System.out.println("|xxxxxxxxx|_________|xxxxxxxxx|");
+                    System.out.println("|xxxxxxxxx|         |xxxxxxxxx|");
+                    System.out.println("|xxxxxxxxx|         |xxxxxxxxx|__________");
+                    System.out.println("|Carter's |Gateroom | Armory  |Jumper Bay|");
 
-            if(currentLocale == 3){
-                System.out.println("| Office* |         |         |          |");
-            }
-            if(currentLocale == 4){
-                System.out.println("| Office  |    *    |         |          |");
-            }
-            if(currentLocale == 5){
-                System.out.println("| Office  |         |    *    |          |");
-            }
-            if(currentLocale == 9){
-                System.out.println("| Office  |         |         |    *     |");
-            }
-            if(currentLocale == 0 || currentLocale == 1 || currentLocale == 2 ||currentLocale == 6 || currentLocale == 7 || currentLocale == 8){
-                System.out.println("| Office  |         |         |");
-            }
-                System.out.println("|xxxxxxxxx|_________|_________|__________|");
-                System.out.println("|Ronan's  |         | McKay's |");
-                System.out.println("|Quarters |  Cafe   |   Lab   |");
+                if(currentLocale == 3){
+                    System.out.println("| Office* |         |         |          |");
+                }
+                if(currentLocale == 4){
+                    System.out.println("| Office  |    *    |         |          |");
+                }
+                if(currentLocale == 5){
+                    System.out.println("| Office  |         |    *    |          |");
+                }
+                if(currentLocale == 9){
+                    System.out.println("| Office  |         |         |    *     |");
+                }
+                if(currentLocale == 0 || currentLocale == 1 || currentLocale == 2 ||currentLocale == 6 || currentLocale == 7 || currentLocale == 8){
+                    System.out.println("| Office  |         |         |");
+                }
+                    System.out.println("|xxxxxxxxx|_________|_________|__________|");
+                    System.out.println("|Ronan's  |         | McKay's |");
+                    System.out.println("|Quarters |  Cafe   |   Lab   |");
 
-            if(currentLocale == 6){
-                System.out.println("|____*____|_________|_________|");
-            }
-            if(currentLocale == 7){
-                System.out.println("|_________|____*____|_________|");
-            }
-            if(currentLocale == 8){
-                System.out.println("|_________|_________|____*____|");
-            }
-            if(currentLocale == 0 || currentLocale == 1 || currentLocale == 2 ||currentLocale == 3 || currentLocale == 4 || currentLocale == 5 || currentLocale == 9){
-                System.out.println("|_________|_________|_________|");
-            }
+                if(currentLocale == 6){
+                    System.out.println("|____*____|_________|_________|");
+                }
+                if(currentLocale == 7){
+                    System.out.println("|_________|____*____|_________|");
+                }
+                if(currentLocale == 8){
+                    System.out.println("|_________|_________|____*____|");
+                }
+                if(currentLocale == 0 || currentLocale == 1 || currentLocale == 2 ||currentLocale == 3 || currentLocale == 4 || currentLocale == 5 || currentLocale == 9){
+                    System.out.println("|_________|_________|_________|");
+                }
         }
 
 
