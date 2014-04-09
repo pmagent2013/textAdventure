@@ -37,6 +37,10 @@ public class MagicItemsList {
         this.last = last;
     }
 
+    public int getLength() {
+        return this.length;
+    }
+
     // Other methods
     @Override
     public String toString() {
@@ -72,6 +76,7 @@ public class MagicItemsList {
             this.last.setNext(item);
             this.last = item;
         }
+        this.length = this.length + 1;
     }
 
 
@@ -80,6 +85,7 @@ public class MagicItemsList {
     //
     private String name;
     private String desc;
+    private int length = 0;
     private ListItem head;
     private ListItem last;
 

@@ -30,6 +30,7 @@ public class Game {
     public static int guessCounter = 5;             //ued to keep track of guesses for password
     public static MagicItemsList magicItems  = new MagicItemsList();
     public static LocaleList localeList  = new LocaleList();
+    public static boolean done = false;
 
 
 
@@ -895,7 +896,6 @@ public class Game {
             System.out.println("The roof of the Jumper Bay retracts and you fly the jumper out. ");
             int currentRow = 3;
             int currentColumn = 7;
-            boolean done = false;
             String[] jumperMapRow0 = new String[15];
             String[] jumperMapRow1 = new String[15];
             String[] jumperMapRow2 = new String[15];
@@ -969,7 +969,7 @@ public class Game {
                 getCommand();
                 if(command.equalsIgnoreCase("n")){
                     if(currentRow!=0){
-                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O" && allRows[currentRow][currentColumn] != "D"){
                             allRows[currentRow][currentColumn] = "x";
                         }
                         allRows[currentRow-1][currentColumn] = "J";
@@ -982,7 +982,7 @@ public class Game {
                 }
                 else if(command.equalsIgnoreCase("s")){
                     if(currentRow!=6){
-                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O" && allRows[currentRow][currentColumn] != "D"){
                             allRows[currentRow][currentColumn] = "x";
                         }
                         allRows[currentRow+1][currentColumn] = "J";
@@ -995,7 +995,7 @@ public class Game {
                 else if(command.equalsIgnoreCase("e")){
                     if(currentColumn!=13)
                     {
-                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O" && allRows[currentRow][currentColumn] != "D"){
                             allRows[currentRow][currentColumn] = "x";
                         }
                         allRows[currentRow][currentColumn+1] = "J";
@@ -1009,7 +1009,7 @@ public class Game {
                 else if(command.equalsIgnoreCase("w")){
                     if(currentColumn!=0)
                     {
-                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O"){
+                        if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O" && allRows[currentRow][currentColumn] != "D"){
                             allRows[currentRow][currentColumn] = "x";
                         }
                         allRows[currentRow][currentColumn-1] = "J";
@@ -1041,39 +1041,65 @@ public class Game {
                     System.out.println("There is an underwater drilling platform beneath the ocean. Perhaps this can be used on day.");
                 }
 
+                if(allRows[currentRow][currentColumn] == allRows[1][7]){
+                    allRows[currentRow][currentColumn] = "D";
+                    System.out.println("A wraith dart has appeared in front of you, prepare to engage.");
+                    dartBattle();
+                }
+
+                if(allRows[currentRow][currentColumn] == allRows[5][7]){
+                    allRows[currentRow][currentColumn] = "D";
+                    System.out.println("A wraith dart has appeared above you, prepare to engage.");
+                    dartBattle();
+                }
+
+                if(allRows[currentRow][currentColumn] == allRows[2][5]){
+                    allRows[currentRow][currentColumn] = "D";
+                    System.out.println("A wraith dart has appeared behind you, prepare to engage.");
+                    dartBattle();
+                }
+                if(allRows[currentRow][currentColumn] == allRows[2][4]){
+                    allRows[currentRow][currentColumn] = "D";
+                    System.out.println("A wraith dart has appeared next to you, prepare to engage.");
+                    dartBattle();
+                }
                 if(allRows[currentRow][currentColumn] == allRows[3][7]){
                     System.out.println("You have successfully returned to Atlantis");
+                    done = true;
                     updateDisplay();
                 }
 
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow0[i]);
+                if(!done){
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow0[i]);
+                    }
+                    System.out.println();
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow1[i]);
+                    }
+                    System.out.println();
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow2[i]);
+                    }
+                    System.out.println();
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow3[i]);
+                    }
+                    System.out.println();
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow4[i]);
+                    }
+                    System.out.println();
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow5[i]);
+                    }
+                    System.out.println();
+                    for(int i= 0; i<14; i++){
+                        System.out.print(jumperMapRow6[i]);
+                    }
+                    System.out.println();
                 }
-                System.out.println();
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow1[i]);
-                }
-                System.out.println();
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow2[i]);
-                }
-                System.out.println();
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow3[i]);
-                }
-                System.out.println();
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow4[i]);
-                }
-                System.out.println();
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow5[i]);
-                }
-                System.out.println();
-                for(int i= 0; i<14; i++){
-                    System.out.print(jumperMapRow6[i]);
-                }
-                System.out.println();
+
             }
         }
         else{
@@ -1119,6 +1145,98 @@ public class Game {
         updateDisplay();
     }
 
+    public static void dartBattle(){
+        boolean battleOver = false;
+        int puddleJumperHealth = 100;
+        int dartHealth = 100;
+        int puddleJumperShield = 100;
+        int puddleJumperCloak = 100;
+        int damageToDart = 0;
+        boolean cloakEngaged = false;
+
+
+        while(!battleOver){
+            System.out.println("Jumper Health: " + puddleJumperHealth + "% " + "Shields: " + puddleJumperShield + "% " + "Cloak Effectiveness: " + puddleJumperCloak + "%");
+            System.out.println("Wraith Dart Health: " + dartHealth + "%");
+            wait(1000); //slight pause to ensure player reads current battle status
+            System.out.println("What would you like to do?");
+            //Players turn
+            System.out.println("Fire drones");
+            System.out.println("Transfer power to shields:");
+            System.out.println("Engage cloak:");
+            System.out.println("Type drones, shields, or cloak");
+            getCommand();
+            if(command.equalsIgnoreCase("drones") || command.equalsIgnoreCase("fire drones")){
+                damageToDart = 30;
+                System.out.println("You fire drones at the Wraith Dart");
+            }
+            else if(command.equalsIgnoreCase("shields") || command.equalsIgnoreCase("transfer power to shields")){
+                puddleJumperShield += 25;
+                System.out.println("You transfer power to the shields");
+            }
+            else if(command.equalsIgnoreCase("cloak") || command.equalsIgnoreCase("engage cloak")){
+                cloakEngaged = true;
+                System.out.println("You engage the cloak");
+            }
+            //Wraiths turn
+            double dartTurn = Math.random()*100;
+            if(dartTurn <= 45){
+                //attack
+                int damage = 40;
+                if(cloakEngaged){
+                    if(puddleJumperCloak == 100){
+                        damage -=40;
+                        System.out.println("Your cloak was fully effective, you have taken no damage.");
+                    }
+                    else if(puddleJumperCloak == 50){
+                        damage -=20;
+                        System.out.println("Your cloak was only somewhat effective, you have taken half damage.");
+                    }
+                    else{
+                        System.out.println("Your cloak is no longer effective, you have taken full damage.");
+                    }
+                }
+                while(puddleJumperShield>0 && damage>0){
+                    puddleJumperShield -= 1;
+                    damage -=1;
+                }
+                if(damage>0){
+                    puddleJumperHealth -= damage;
+                    if(puddleJumperHealth<=0){
+                        battleOver = true;
+                        System.out.println("The Wraith Dart has destroyed your puddle jumper. You somehow survive and are rescued.");
+                        System.out.println("You return to the Jumper Bay at Atlantis.");
+                        done = true;
+                        updateDisplay();
+                    }
+                }
+                System.out.println("The Wraith Dart has fired on you");
+            }
+            else if(dartTurn>45 && dartTurn <=75){
+                //evasive maneuvers
+                if(damageToDart == 30){
+                    damageToDart = 15;
+                }
+                System.out.println("The Wraith Dart initiates evasive maneuvers");
+            }
+            else{
+                //hull regeneration
+                dartHealth += 20;
+                System.out.println("The Wraith Dart has regenerated it\'s hull");
+            }
+            if(cloakEngaged){
+                cloakEngaged = false;
+                puddleJumperCloak -=50;
+            }
+            dartHealth -= damageToDart;
+            if (dartHealth<=0){
+                System.out.println("You have successfully destroyed the enemy dart");
+                battleOver = true;
+            }
+
+        }
+    }
+
     private static void readMagicItemsFromFile(String fileName,
                                                MagicItemsList lm) {
         File myFile = new File(fileName);
@@ -1144,6 +1262,8 @@ public class Game {
             System.out.println("File not found. " + ex.toString());
         }
     }
+
+
 
     private static void showMap() {
         boolean hasMap = false;
@@ -1230,6 +1350,14 @@ public class Game {
         }
         else {
             System.out.println("You do not have the map.");
+        }
+    }
+
+    private static void wait(int time){
+        try {
+            Thread.sleep(time);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
     }
 
