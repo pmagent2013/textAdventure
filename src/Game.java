@@ -30,7 +30,7 @@ public class Game {
     public static int guessCounter = 5;             //ued to keep track of guesses for password
     public static MagicItemsList magicItems  = new MagicItemsList();
     public static LocaleList localeList  = new LocaleList();
-    public static boolean done = false;
+    public static boolean done = false;             //Used for Puddle Jumper explore/battle. Needed to be global
 
 
 
@@ -86,8 +86,8 @@ public class Game {
         item1.setPower(10);
 
         Item item2 = new Item(2);
-        item2.setName("gun");
-        item2.setDesc("There is an assault rifle available for pickup.");
+        item2.setName("P90");
+        item2.setDesc("There is a P90 available for pickup.");
         item2.setPower(5);
 
         Item item3 = new Item(3);
@@ -95,11 +95,11 @@ public class Game {
         item3.setDesc("There are allies available for pickup.");
 
         Item item4 = new Item(4);
-        item4.setName("blue jello");
+        item4.setName("cup of blue jello");
         item4.setDesc("There is blue jello available for pickup.");
 
         Item item5 = new Item(5);
-        item5.setName("gate addresses");
+        item5.setName("list of gate addresses");
         item5.setDesc("There is a list of gate addresses available for pickup.");
 
         //array of all items in game
@@ -371,14 +371,14 @@ public class Game {
         System.out.println();
         if(moves -1!= 0){
             if(localeList.getCurrent().getHasItem() && !localeList.getCurrent().getHasVisited()){
-                System.out.println(localeList.getCurrent().getLookDesc() + ". " + localeList.getCurrent().getWhichItem().getDesc());
+                System.out.println(localeList.getCurrent().getLookDesc() + " " + localeList.getCurrent().getWhichItem().getDesc());
             }
             else if(!localeList.getCurrent().getHasVisited()){
                 System.out.println(localeList.getCurrent().getLookDesc());
             }
             else if(localeList.getCurrent().getHasItem())
             {
-                System.out.println(localeList.getCurrent().getDesc() + ". " + localeList.getCurrent().getWhichItem().getDesc());
+                System.out.println(localeList.getCurrent().getDesc() + " " + localeList.getCurrent().getWhichItem().getDesc());
             }
             else{
                 System.out.println(localeList.getCurrent().getDesc());
@@ -386,20 +386,25 @@ public class Game {
 
             System.out.print("From here the directions you can move are: ");
 
+            boolean canMove = false;
 
             if(localeList.getCurrent().getGoNorth() != null){
                 System.out.print("North ");
+                canMove = true;
             }
             if(localeList.getCurrent().getGoSouth() != null){
                 System.out.print("South ");
+                canMove = true;
             }
             if(localeList.getCurrent().getGoEast() != null){
                 System.out.print("East ");
+                canMove = true;
             }
             if(localeList.getCurrent().getGoWest() != null){
                 System.out.print("West ");
+                canMove = true;
             }
-            else{
+            if(!canMove){
                 System.out.print("Back through the stargate ");
             }
 
@@ -825,6 +830,7 @@ public class Game {
         }
     }
 
+    //Allows you to talk to some people
     private static void talk() {
         if(currentLocale == 0){
             System.out.println("The Wraith aren't much for talking. They prefer sucking the life out of you.");
@@ -849,6 +855,8 @@ public class Game {
         }
     }
 
+    //Allows you to take a puddle umper through the stargate or explore the planet
+    //Need the list of gate addresses to use jumper
     private static void puddleJumper(){
         Boolean hasAdresses = false;
         for(int i=0; i<inventory.length; i++){
@@ -857,21 +865,24 @@ public class Game {
             }
         }
         if(hasAdresses){
-            System.out.println("Would you like to enter a jumper?");
+            System.out.println("Would you like to enter a jumper?"); //asks player if they want to enter jumper
             getCommand();
             if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
                 inJumper = true;
                 System.out.println("What would you like to do?");
+                //asks player if they want to go through gate or explore
                 System.out.println("Go to the gateroom and travel through the stargate? Or Open the roof and go explore the planet?");
                 System.out.println("Type Gateroom or Explore");
                 jumperAction();
             }
+            //if they say no, send them back to armory
             else if(command.equalsIgnoreCase("no") || command.equalsIgnoreCase("n")){
                 System.out.println("Well, no point hanging around in here, back to the Armory.");
                 localeList.setCurrent(localeList.getCurrent().getGoWest());
                 currentLocale = 5;
                 updateDisplay();
             }
+            //ensures they type yes or no
             else{
                 System.out.println("Invalid command. Please type yes or no");
                 puddleJumper();
@@ -882,6 +893,7 @@ public class Game {
         }
     }
 
+    //controls what jumper does
     private static void jumperAction(){
         getCommand();
         if(command.equalsIgnoreCase("gateroom")){
@@ -892,10 +904,12 @@ public class Game {
             updateDisplay();
 
         }
+        //if the player wants to explore the planet
         else if(command.equalsIgnoreCase("explore")){
             System.out.println("The roof of the Jumper Bay retracts and you fly the jumper out. ");
             int currentRow = 3;
             int currentColumn = 7;
+            //creates the rows of the map
             String[] jumperMapRow0 = new String[15];
             String[] jumperMapRow1 = new String[15];
             String[] jumperMapRow2 = new String[15];
@@ -904,6 +918,8 @@ public class Game {
             String[] jumperMapRow5 = new String[15];
             String[] jumperMapRow6 = new String[15];
 
+            //fills the rows
+            // . represents an unvisited location
             for(int i =0; i< 14; i++){
                 jumperMapRow0[i] = ".";
             }
@@ -915,7 +931,7 @@ public class Game {
             }
             for(int i =0; i< 14; i++){
                 jumperMapRow3[i] = ".";
-                jumperMapRow3[7] = "A";
+                jumperMapRow3[7] = "A"; //Atlantis
             }
             for(int i =0; i< 14; i++){
                 jumperMapRow4[i] = ".";
@@ -927,6 +943,7 @@ public class Game {
                 jumperMapRow6[i] = ".";
             }
 
+            // create a 2d array matrix and fill it.
             String[][] allRows = new String[7][15];
             allRows[0] = jumperMapRow0;
             allRows[1] = jumperMapRow1;
@@ -936,6 +953,7 @@ public class Game {
             allRows[5] = jumperMapRow5;
             allRows[6] = jumperMapRow6;
 
+            //print out the map
             for(int i= 0; i<14; i++){
                 System.out.print(jumperMapRow0[i]);
             }
@@ -965,10 +983,13 @@ public class Game {
             }
             System.out.println(jumperMapRow6[5]);
 
+            //loop to be executed until player returns to Atlantis or are player is destroyed
             while(!done){
                 getCommand();
+                //controls navigation
                 if(command.equalsIgnoreCase("n")){
                     if(currentRow!=0){
+                        //replaces the . with an x to signify a visited location unless it is a location designated by a capital letter
                         if(allRows[currentRow][currentColumn] != "M" && allRows[currentRow][currentColumn] != "A" && allRows[currentRow][currentColumn] != "W" && allRows[currentRow][currentColumn] != "O" && allRows[currentRow][currentColumn] != "D"){
                             allRows[currentRow][currentColumn] = "x";
                         }
@@ -976,6 +997,7 @@ public class Game {
                         currentRow = currentRow-1;
                     }
                     else{
+                        //prevents player from leaving map
                         System.out.println("You cannot go that way, you are too far from Atlantis");
                     }
 
@@ -1019,10 +1041,12 @@ public class Game {
                         System.out.println("You cannot go that way, you are too far from Atlantis");
                     }
                 }
+                //if player enters an invalid command
                 else {
                     System.out.println("Invalid command, to move type N, S, E, W. To return to Atlantis navigate the jumper to the A.");
                 }
 
+                //if player reaches the mainland they are rewarded
                 if(allRows[currentRow][currentColumn] == allRows[0][12]){
                     allRows[currentRow][currentColumn] = "M";
                     System.out.println("You have found the mainland, you land the jumper and explore.");
@@ -1031,44 +1055,54 @@ public class Game {
                     totalPower += 10;
                 }
 
+                //just a show reference
                 if(allRows[currentRow][currentColumn] == allRows[5][3]){
                     allRows[currentRow][currentColumn] = "W";
                     System.out.println("There is a very large whale in the ocean beneath you.");
                 }
 
+                //just a show reference
                 if(allRows[currentRow][currentColumn] == allRows[5][9]){
                     allRows[currentRow][currentColumn] = "O";
                     System.out.println("There is an underwater drilling platform beneath the ocean. Perhaps this can be used on day.");
                 }
 
+                //a battle with a wraith dart
                 if(allRows[currentRow][currentColumn] == allRows[1][7]){
                     allRows[currentRow][currentColumn] = "D";
                     System.out.println("A wraith dart has appeared in front of you, prepare to engage.");
                     dartBattle();
                 }
 
+                //a battle with a wraith dart
                 if(allRows[currentRow][currentColumn] == allRows[5][7]){
                     allRows[currentRow][currentColumn] = "D";
                     System.out.println("A wraith dart has appeared above you, prepare to engage.");
                     dartBattle();
                 }
 
+                //a battle with a wraith dart
                 if(allRows[currentRow][currentColumn] == allRows[2][5]){
                     allRows[currentRow][currentColumn] = "D";
                     System.out.println("A wraith dart has appeared behind you, prepare to engage.");
                     dartBattle();
                 }
+
+                //a battle with a wraith dart
                 if(allRows[currentRow][currentColumn] == allRows[2][4]){
                     allRows[currentRow][currentColumn] = "D";
                     System.out.println("A wraith dart has appeared next to you, prepare to engage.");
                     dartBattle();
                 }
+
+                //returns player to the Jumper Bay
                 if(allRows[currentRow][currentColumn] == allRows[3][7]){
                     System.out.println("You have successfully returned to Atlantis");
                     done = true;
                     updateDisplay();
                 }
 
+                //updates the map
                 if(!done){
                     for(int i= 0; i<14; i++){
                         System.out.print(jumperMapRow0[i]);
@@ -1108,7 +1142,9 @@ public class Game {
         }
     }
 
+    //If the player choose to go to gateroom
     private static void jumperActionGateroom(){
+        //Can choose to travel to one of these locations
         System.out.println("Midway Space Station");
         getCommand();
         if(command.equalsIgnoreCase("Midway Space Station")){
@@ -1122,10 +1158,12 @@ public class Game {
         }
     }
 
+    //If the player is on midway
     private static void midway(){
         System.out.println("Would you like to gate to Earth or Atlantis?");
         System.out.println("Type Earth or Atlantis");
         getCommand();
+        //allows the player to travel to earth or atlantis
         if(command.equalsIgnoreCase("earth")){
             localeList.setCurrent(localeList.getCurrent().getGoToEarth());
             currentLocale = 11;
@@ -1138,6 +1176,7 @@ public class Game {
             System.out.println("You arrive in the gateroom, you maneuver the jumper back to the jumper bay.");
             inJumper = false;
         }
+        //prevents invlaid commands
         else{
             System.out.println("Invalid destination. Please type Earth or Atlantis");
             midway();
@@ -1145,7 +1184,9 @@ public class Game {
         updateDisplay();
     }
 
+    //Code for dart and puddle jumper battles
     public static void dartBattle(){
+        //declerations
         boolean battleOver = false;
         int puddleJumperHealth = 100;
         int dartHealth = 100;
@@ -1154,41 +1195,49 @@ public class Game {
         int damageToDart = 0;
         boolean cloakEngaged = false;
 
-
+        //loop until either player is destroyed
         while(!battleOver){
             System.out.println("Jumper Health: " + puddleJumperHealth + "% " + "Shields: " + puddleJumperShield + "% " + "Cloak Effectiveness: " + puddleJumperCloak + "%");
             System.out.println("Wraith Dart Health: " + dartHealth + "%");
             wait(1000); //slight pause to ensure player reads current battle status
             System.out.println("What would you like to do?");
             //Players turn
+            //can choose from these options
             System.out.println("Fire drones");
             System.out.println("Transfer power to shields:");
             System.out.println("Engage cloak:");
             System.out.println("Type drones, shields, or cloak");
             getCommand();
             if(command.equalsIgnoreCase("drones") || command.equalsIgnoreCase("fire drones")){
+                //set current potential damage to 30
                 damageToDart = 30;
                 System.out.println("You fire drones at the Wraith Dart");
             }
             else if(command.equalsIgnoreCase("shields") || command.equalsIgnoreCase("transfer power to shields")){
+                //increase shield strength by 25
                 puddleJumperShield += 25;
                 System.out.println("You transfer power to the shields");
             }
             else if(command.equalsIgnoreCase("cloak") || command.equalsIgnoreCase("engage cloak")){
+                //engage cloak, only useful twice
                 cloakEngaged = true;
                 System.out.println("You engage the cloak");
             }
             //Wraiths turn
+            //randomly select an action for the wraith to take
             double dartTurn = Math.random()*100;
             if(dartTurn <= 45){
                 //attack
                 int damage = 40;
                 if(cloakEngaged){
+                    //if the cloak is engaged reduce damage dealt
                     if(puddleJumperCloak == 100){
+                        //if cloak is at 100 fully reduce damage
                         damage -=40;
                         System.out.println("Your cloak was fully effective, you have taken no damage.");
                     }
                     else if(puddleJumperCloak == 50){
+                        //if claok is at 50 reduce damage by half
                         damage -=20;
                         System.out.println("Your cloak was only somewhat effective, you have taken half damage.");
                     }
@@ -1196,6 +1245,8 @@ public class Game {
                         System.out.println("Your cloak is no longer effective, you have taken full damage.");
                     }
                 }
+                //if the puddle jumper shield is above zero deal damage till shield until it reached 0
+                //then deal damage to the jumper health
                 while(puddleJumperShield>0 && damage>0){
                     puddleJumperShield -= 1;
                     damage -=1;
@@ -1215,6 +1266,7 @@ public class Game {
             else if(dartTurn>45 && dartTurn <=75){
                 //evasive maneuvers
                 if(damageToDart == 30){
+                    //if player fired drones and wriath evades, reduce damage done by half
                     damageToDart = 15;
                 }
                 System.out.println("The Wraith Dart initiates evasive maneuvers");
@@ -1225,10 +1277,12 @@ public class Game {
                 System.out.println("The Wraith Dart has regenerated it\'s hull");
             }
             if(cloakEngaged){
+                //if player engaged cloak, reduce effectiveness by 50%
                 cloakEngaged = false;
                 puddleJumperCloak -=50;
             }
             dartHealth -= damageToDart;
+            //checks to see if player won
             if (dartHealth<=0){
                 System.out.println("You have successfully destroyed the enemy dart");
                 battleOver = true;
