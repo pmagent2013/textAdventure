@@ -541,29 +541,39 @@ public class Game {
                    if(currentLocale == 11){
                        System.out.println("Midway Space Station");
                    }
-                   getCommand();
+                   boolean acceptableAddress = false;
+                   while(!acceptableAddress){
+                       getCommand();
+                       if(command.equalsIgnoreCase("Barren World")){
+                           currentLocale = 1;
+                           newLocation = localeList.getCurrent().getGoToBarren();
+                           acceptableAddress = true;
+                       }
+                       else if(command.equalsIgnoreCase("Athos")){
+                           currentLocale = 2;
+                           newLocation = localeList.getCurrent().getGoToAthos();
+                           acceptableAddress = true;
+                       }
+                       else if(command.equalsIgnoreCase("Wriath Base")){
+                           currentLocale = 0;
+                           newLocation = localeList.getCurrent().getGoToWratih();
+                           acceptableAddress = true;
+                       }
+                       else if(command.equalsIgnoreCase("Atlantis")){
+                           currentLocale = 4;
+                           newLocation = localeList.getCurrent().getGoToAtlantis();
+                           acceptableAddress = true;
+                       }
+                       else if(command.equalsIgnoreCase("Midway Space Station")){
+                           currentLocale = 10;
+                           newLocation = localeList.getCurrent().getGoToMidway();
+                           acceptableAddress = true;
+                       }
+                       else{
+                           System.out.println("That is not a recognized gate address, please dial a correct address");
+                       }
+                   }
                    System.out.println("The gate has been dialed, you step through the gate and you emerge at your destination");
-                   if(command.equalsIgnoreCase("Barren World")){
-                       currentLocale = 1;
-                       newLocation = localeList.getCurrent().getGoToBarren();
-                   }
-                   else if(command.equalsIgnoreCase("Athos")){
-                       currentLocale = 2;
-                       newLocation = localeList.getCurrent().getGoToAthos();
-                   }
-                   else if(command.equalsIgnoreCase("Wriath Base")){
-                       currentLocale = 0;
-                       newLocation = localeList.getCurrent().getGoToWratih();
-                   }
-                   else if(command.equalsIgnoreCase("Atlantis")){
-                       currentLocale = 4;
-                       newLocation = localeList.getCurrent().getGoToAtlantis();
-                   }
-                   else if(command.equalsIgnoreCase("Midway Space Station")){
-                       currentLocale = 10;
-                       newLocation = localeList.getCurrent().getGoToMidway();
-                   }
-
                }
                else{
                    System.out.println("You cannot dial the gate without any gate addresses, find a list of gate addresses.");
