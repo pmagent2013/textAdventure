@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -28,7 +27,8 @@ public class Game {
     public static int coins = 100;                  // keeps track of coins used to buy items in magick shoppe
     public static int cheaterCounter = 0;           //used in case the player decides to mine for coins for too long
     public static int guessCounter = 5;             //ued to keep track of guesses for password
-    public static MagicItemsList magicItems  = new MagicItemsList();
+    //public static MagicItemsList magicItems  = new MagicItemsList();
+    public static ListItem[] magicItemsArray = new ListItem[666];
     public static LocaleList localeList  = new LocaleList();
     public static boolean done = false;             //Used for Puddle Jumper explore/battle. Needed to be global
 
@@ -301,8 +301,9 @@ public class Game {
 
     private static void createMagicItems() {
         // Create the list manager for our magic items.
-        magicItems.setName("List of Magic Items");
-        magicItems.setDesc("These are the magic items for purchase.");
+        //todo
+        //magicItems.setName("List of Magic Items");
+        //magicItems.setDesc("These are the magic items for purchase.");
 
 
         // Create some magic items and put them in the list.
@@ -351,14 +352,17 @@ public class Game {
 
 
         final String fileName = "magicitems.txt";
-        readMagicItemsFromFile(fileName, magicItems);
-        magicItems.add(item1);
+        //todo
+        //readMagicItemsFromFile(fileName, magicItems);
+        readMagicItemsFromFileToArray(fileName, magicItemsArray);
+       /* magicItems.add(item1);
         magicItems.add(item2);
         magicItems.add(item3);
         magicItems.add(item4);
         magicItems.add(item5);
         magicItems.add(item6);
         magicItems.add(item7);
+        */
 
     }
 
@@ -646,8 +650,15 @@ public class Game {
         if(currentLocale == 8){
             System.out.println("Welcome to the Magick Shoppe protoype created by Dr. Rodney McKay");
             System.out.println("These are the items available for purchase: ");
-            System.out.println(magicItems.Shop());
+            selectionSort(magicItemsArray);
+            for (int i = 0; i < magicItemsArray.length; i++) {
+                if (magicItemsArray[i] != null) {
+                    System.out.println(magicItemsArray[i].toString());
+                }
+            }
             System.out.println("What would you like to buy?");
+            getCommand();
+            shop();
             buying = true;
         }
         else{
@@ -657,35 +668,10 @@ public class Game {
 
     //checks to see if the item the player typed is available to be bought, checks if player has enough coins, adds to inventory, subtracts coins
     private static void shop() {
-
-        ListItem currentItem = magicItems.getHead();
+        int counter = 0;
+        ListItem currentItem = magicItemsArray[counter];
         Boolean boughtSomething = false;
-        while (currentItem != null) {
-
-
-            if(command.equalsIgnoreCase(currentItem.getName())){ //looks for item
-                if(coins >= currentItem.getCost()){ //checks for enough coins
-                    System.out.println("You have purchased " + currentItem.getName());
-                    System.out.println("Thank you for testing out Dr. McKays's Prototype Magick Shoppe. Please come again. ");
-                    coins-=currentItem.getCost(); //subtracts coins
-                    boughtSomething = true;
-                    magicItemsInventory.add(currentItem); //adds item to inventory
-                    totalPower += currentItem.getPower(); //adds to players power
-                    score += 2;                           //gives player some points for buying items
-                }
-                else{
-                    System.out.println("McKay set the price too high, you don't have enough coins to afford this item."); //if player doesn't have enough coins
-                    boughtSomething = true;
-                }
-
-            }
-
-            currentItem = currentItem.getNext();
-        }
-        buying = false;
-        if(!boughtSomething){
-            System.out.println("That is not an item McKay has stocked the machine with. "); // if player typed unavailable item
-        }
+        binarySearchArray(magicItemsArray, command);
     }
 
     //displays the available actions to the player
@@ -1328,7 +1314,94 @@ public class Game {
         }
     }
 
+    private static void readMagicItemsFromFileToArray(String fileName,
+                                                      ListItem[] items) {
+        File myFile = new File(fileName);
+        try {
+            int itemCount = 0;
+            Scanner input = new Scanner(myFile);
 
+            while (input.hasNext() && itemCount < items.length) {
+                // Read a line from the file.
+                String itemName = input.nextLine();
+
+                // Construct a new list item and set its attributes.
+                ListItem fileItem = new ListItem();
+                fileItem.setName(itemName);
+                fileItem.setCost(Math.random() * 100);
+                fileItem.setNext(null); // Still redundant. Still safe.
+
+                // Add the newly constructed item to the array.
+                items[itemCount] = fileItem;
+                itemCount = itemCount + 1;
+            }
+            // Close the file.
+            input.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found. " + ex.toString());
+        }
+    }
+
+    private static void selectionSort(ListItem[] items) {
+        for (int pass = 0; pass < items.length-1; pass++) {
+            // System.out.println(pass + "-" + items[pass]);
+            int indexOfTarget = pass;
+            int indexOfSmallest = indexOfTarget;
+            for (int j = indexOfTarget+1; j < items.length; j++) {
+                if (items[j].getName().compareToIgnoreCase(items[indexOfSmallest].getName()) < 0) {
+                    indexOfSmallest = j;
+                }
+            }
+            ListItem temp = items[indexOfTarget];
+            items[indexOfTarget] = items[indexOfSmallest];
+            items[indexOfSmallest] = temp;
+        }
+    }
+
+    private static ListItem binarySearchArray(ListItem[] items,
+                                              String target) {
+        ListItem retVal = null;
+        ListItem currentItem = new ListItem();
+        boolean isFound = false;
+        int counter = 0;
+        int low  = 0;
+        int high = items.length-1; // because 0-based arrays
+        while ( (!isFound) && (low <= high)) {
+            int mid = Math.round((high + low) / 2);
+            currentItem = items[mid];
+            if (currentItem.getName().equalsIgnoreCase(target)) {
+                // We found it!
+                isFound = true;
+                retVal = currentItem;
+            } else {
+                // Keep looking.
+                counter++;
+                if (currentItem.getName().compareToIgnoreCase(target) > 0) {
+                    // target is higher in the list than the currentItem (at mid)
+                    high = mid - 1;
+                } else {
+                    // target is lower in the list than the currentItem (at mid)
+                    low = mid + 1;
+                }
+            }
+        }
+        if (isFound) {
+            if(coins >= currentItem.getCost()){ //checks for enough coins
+                System.out.println("You have purchased " + currentItem.getName());
+                System.out.println("Thank you for testing out Dr. McKays's Prototype Magick Shoppe. Please come again. ");
+                coins-=currentItem.getCost(); //subtracts coins
+                magicItemsInventory.add(currentItem); //adds item to inventory
+                totalPower += currentItem.getPower(); //adds to players power
+                score += 2;                           //gives player some points for buying items
+            }
+            else{
+                System.out.println("McKay set the price too high, you don't have enough coins to afford this item."); //if player doesn't have enough coins
+            }
+        } else {
+            System.out.println("That is not an item McKay has stocked the machine with. "); // if player typed unavailable item
+        }
+        return retVal;
+    }
 
     private static void showMap() {
         boolean hasMap = false;
