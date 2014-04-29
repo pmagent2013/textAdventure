@@ -110,7 +110,7 @@ public class Game {
         items[3] = item3; //allies
         items[4] = item4; //blue jello
         items[5] = item5; //gate addresses
-        inventory = new Item[5]; //creates the array to store items when the player picks them up
+        inventory = new Item[7]; //creates the array to store items when the player picks them up
 
         createLocales();
         createMagicItems(); //Creates the items that player can buy from McKay's Machine
@@ -719,6 +719,7 @@ public class Game {
                     System.out.println("We will fight on your side.");
                     System.out.println("You have gained the allies necessary to fight the Wraith");
                     totalPower += 100; //adds to power total
+                    inventory[inventoryCounter] = localeList.getCurrent().getWhichItem(); //if there is an item, pick it up
                 }
             }
             if(!jelloCheck){
