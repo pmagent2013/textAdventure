@@ -30,6 +30,8 @@ public class Game {
     //public static MagicItemsList magicItems  = new MagicItemsList();
     public static ListItem[] magicItemsArray = new ListItem[666];
     public static LocaleList localeList  = new LocaleList();
+    public static Stack navStack = new Stack();
+    public static Queue navQueue = new Queue();
     public static boolean done = false;             //Used for Puddle Jumper explore/battle. Needed to be global
 
 
@@ -552,26 +554,61 @@ public class Game {
                            currentLocale = 1;
                            newLocation = localeList.getCurrent().getGoToBarren();
                            acceptableAddress = true;
+                           try{
+                               navStack.push(5);
+                               navQueue.enqueue(5);
+                           }
+                           catch (Exception ex) {
+                               System.out.println("Caught exception: " + ex.getMessage());
+                           }
                        }
                        else if(command.equalsIgnoreCase("Athos")){
                            currentLocale = 2;
                            newLocation = localeList.getCurrent().getGoToAthos();
                            acceptableAddress = true;
+                           try{
+                               navStack.push(5);
+                               navQueue.enqueue(5);
+                           }
+                           catch (Exception ex) {
+                               System.out.println("Caught exception: " + ex.getMessage());
+                           }
                        }
                        else if(command.equalsIgnoreCase("Wriath Base")){
                            currentLocale = 0;
                            newLocation = localeList.getCurrent().getGoToWratih();
                            acceptableAddress = true;
+                           try{
+                               navStack.push(5);
+                               navQueue.enqueue(5);
+                           }
+                           catch (Exception ex) {
+                               System.out.println("Caught exception: " + ex.getMessage());
+                           }
                        }
                        else if(command.equalsIgnoreCase("Atlantis")){
                            currentLocale = 4;
                            newLocation = localeList.getCurrent().getGoToAtlantis();
                            acceptableAddress = true;
+                           try{
+                               navStack.push(5);
+                               navQueue.enqueue(5);
+                           }
+                           catch (Exception ex) {
+                               System.out.println("Caught exception: " + ex.getMessage());
+                           }
                        }
                        else if(command.equalsIgnoreCase("Midway Space Station")){
                            currentLocale = 10;
                            newLocation = localeList.getCurrent().getGoToMidway();
                            acceptableAddress = true;
+                           try{
+                               navStack.push(5);
+                               navQueue.enqueue(5);
+                           }
+                           catch (Exception ex) {
+                               System.out.println("Caught exception: " + ex.getMessage());
+                           }
                        }
                        else{
                            System.out.println("That is not a recognized gate address, please dial a correct address");
@@ -585,15 +622,43 @@ public class Game {
            }
            else if(dir == 0){
                newLocation = localeList.getCurrent().getGoNorth();
+               try{
+                   navStack.push(0);
+                   navQueue.enqueue(0);
+               }
+               catch (Exception ex) {
+                   System.out.println("Caught exception: " + ex.getMessage());
+               }
            }
            else if(dir == 1){
                newLocation = localeList.getCurrent().getGoSouth();
+               try{
+                   navStack.push(1);
+                   navQueue.enqueue(1);
+               }
+               catch (Exception ex) {
+                   System.out.println("Caught exception: " + ex.getMessage());
+               }
            }
            else if(dir == 2){
                newLocation = localeList.getCurrent().getGoEast();
+               try{
+                   navStack.push(3);
+                   navQueue.enqueue(3);
+               }
+               catch (Exception ex) {
+                   System.out.println("Caught exception: " + ex.getMessage());
+               }
            }
            else{
                newLocation = localeList.getCurrent().getGoWest();
+               try{
+                   navStack.push(2);
+                   navQueue.enqueue(2);
+               }
+               catch (Exception ex) {
+                   System.out.println("Caught exception: " + ex.getMessage());
+               }
            }
 
             //if the player can't go that way, tell them
@@ -767,7 +832,15 @@ public class Game {
         System.out.println("You have begun your assault on the Wraith Base ");
         if(totalPower > enemyCount){
             System.out.println("You have defeated the enemy troops and captured vital intelligence. Because of the victory Atlantis will remain safe.");
-            quit();
+            System.out.println("How would you like to view your progress? Forwards or reverse?");
+            System.out.println("type forward or reverse");
+            getCommand();
+            if(command.equalsIgnoreCase("forward")){
+                printNavigationForward();
+            }
+            else if(command.equalsIgnoreCase("reverse")){
+                printNavigationReverse();
+            }
         }
         else {
             System.out.println("The enemy forces were to strong, and you did not have good enough items.");
@@ -1285,6 +1358,59 @@ public class Game {
                 battleOver = true;
             }
 
+        }
+    }
+
+    private static void printNavigationReverse(){
+        String navPrint = "";
+        int input;
+        while(!navStack.isEmpty()){
+           input = navStack.pop();
+           if(input == 0){
+               navPrint = "north";
+           }
+           if(input == 1){
+               navPrint = "south";
+           }
+           if(input == 2){
+               navPrint = "west";
+           }
+           if(input == 3){
+               navPrint = "east";
+           }
+           if(input == 5){
+               navPrint = "through the gate";
+           }
+           System.out.println(navPrint);
+        }
+    }
+
+    private static void printNavigationForward(){
+        String navPrint = "";
+        int input;
+        while(!navQueue.isEmpty()){
+            try {
+                input = navQueue.dequeue();
+                if(input == 0){
+                    navPrint = "north";
+                }
+                if(input == 1){
+                    navPrint = "south";
+                }
+                if(input == 2){
+                    navPrint = "west";
+                }
+                if(input == 3){
+                    navPrint = "east";
+                }
+                if(input == 5){
+                    navPrint = "through the gate";
+                }
+                System.out.println(navPrint);
+            }
+            catch (Exception ex) {
+                System.out.println("Caught exception: " + ex.getMessage());
+            }
         }
     }
 
