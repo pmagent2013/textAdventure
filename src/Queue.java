@@ -61,7 +61,7 @@ public class Queue {
         }
     }
 
-    private final int CAPACITY = 5;
+    private final int CAPACITY = 1000;
     private int[] arr = new int[CAPACITY];
     private int frontPtr = 0;
     private int backPtr  = -1;

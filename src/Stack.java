@@ -8,13 +8,14 @@ public class Stack {
         init();
     }
 
-    public void push(int item) {
+    public void push(int item) throws Exception{
         // Check for stack overflow.
         if (topPtr > 0) {
             topPtr = topPtr - 1;
             arr[topPtr] = item;
         } else {
-            // TODO: Throw an overflow exception.
+            Exception overflow = new Exception("Stack Overflow");
+            throw overflow;
         }
     }
 
@@ -25,9 +26,8 @@ public class Stack {
             retVal = arr[topPtr];
             topPtr = topPtr + 1;
         } else {
-            // In case of underflow, return -1.
-            // TODO: Throw an underflow exception.
             retVal = -1;
+            Exception underflow = new Exception("Stack Underflow");
         }
         return retVal;
     }

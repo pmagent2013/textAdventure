@@ -18,7 +18,7 @@ public class Game {
     public static boolean inJumper = false;         // Determines if the player is in the Jumper
     public static double moves = 1;                 // Counter of the player's moves.
     public static double score = 5;                 // Tracker of the player's score.
-    public static int enemyCount = 210;             // Change this to increase/decrease difficulty
+    public static int enemyCount = 150;             // Change this to increase/decrease difficulty
     public static int totalPower = 0;               // Keeps track of the total power the player has / damage they can do
     public static Item[] items;                     // An uninitialized array of type Item. See init() for initialization.
     public static Item[] inventory;                 // An array of Items that stores the players items they pickup
@@ -521,6 +521,8 @@ public class Game {
             wake();
         }else if (command.equalsIgnoreCase("talk") || command.equalsIgnoreCase("t")) { //talk to people
             talk();
+        }else if (command.equalsIgnoreCase("test") || command.equalsIgnoreCase("test")) { //talk to people
+            endBattle();
         }else{
             System.out.println("That is an invalid command. Type help to see a list of commands.");
         }
@@ -574,7 +576,7 @@ public class Game {
                                System.out.println("Caught exception: " + ex.getMessage());
                            }
                        }
-                       else if(command.equalsIgnoreCase("Wriath Base")){
+                       else if(command.equalsIgnoreCase("Wraith Base")){
                            currentLocale = 0;
                            newLocation = localeList.getCurrent().getGoToWratih();
                            acceptableAddress = true;
@@ -830,27 +832,8 @@ public class Game {
     //if the player is in the enemy base give them the option to attack
     private static void attack() {
         System.out.println("You have begun your assault on the Wraith Base ");
-        if(totalPower > enemyCount){
-            System.out.println("You have defeated the enemy troops and captured vital intelligence. Because of the victory Atlantis will remain safe.");
-            System.out.println("How would you like to view your progress? Forwards or reverse?");
-            System.out.println("type forward or reverse");
-            getCommand();
-            if(command.equalsIgnoreCase("forward")){
-                printNavigationForward();
-            }
-            else if(command.equalsIgnoreCase("reverse")){
-                printNavigationReverse();
-            }
-        }
-        else {
-            System.out.println("The enemy forces were to strong, and you did not have good enough items.");
-            System.out.println("In the aftermath of the battle the Wraith found you barely alive. They have taken \n +" +
-                               "you to michael to be experimented on. Death would've been better.");
-            quit();
-        }
+        endBattle();
     }
-
-    //Displays the map to help the player navigate
 
 
     private static void quit() {
@@ -1361,6 +1344,116 @@ public class Game {
         }
     }
 
+    public static void endBattle(){
+        //declerations
+        boolean battleOver = false;
+        int enemyNumbers = 100 * enemyCount;
+        int playerHealth = 100;
+        boolean takenCover = false;
+        //loop until either player is destroyed
+        while(!battleOver){
+
+            System.out.println("Your Army Health: " + playerHealth + "%");
+            System.out.println("Number of enemies: " + enemyNumbers);
+            System.out.println("What would you like to do:?");
+            //Players turn
+            //can choose from these options
+            System.out.println("Attack");
+            System.out.println("Take Cover");
+            System.out.println("Bandage Allies");
+            getCommand();
+            boolean allowedInput = false;
+            while(!allowedInput){
+                if(command.equalsIgnoreCase("attack")){
+                    enemyNumbers -= (25*totalPower);
+                    System.out.println("Your army charges and attacks the enemy.");
+                    allowedInput = true;
+                }
+                else if(command.equalsIgnoreCase("take cover") || command.equalsIgnoreCase("cover")){
+                    //reduce potential damage taken by 50%
+                    takenCover = true;
+                    System.out.println("Your army takes cover");
+                    allowedInput = true;
+                }
+                else if(command.equalsIgnoreCase("bandage allies") || command.equalsIgnoreCase("bandage")){
+                    playerHealth +=15;
+                    System.out.println("You bandage your allies");
+                    allowedInput = true;
+                }
+                else{
+                    System.out.println("Unrecognized action, you can order your army to either attack, take cover, or bandage allies");
+                    getCommand();
+                }
+            }
+
+            //Wraiths turn
+            //randomly select an action for the wraith to take
+            double enemyTurn = Math.random()*100;
+            if(enemyTurn <= 60){
+                //attack
+                System.out.println("The enemy opened fire on you");
+                if(takenCover == true){
+                    playerHealth -= 10;
+                }
+                else{
+                    playerHealth -= 20;
+                }
+
+            }
+            else if(enemyTurn>60 && enemyTurn <=100){
+                //reinforcements
+                enemyNumbers += 1000;
+                System.out.println("Reinforcements arrive for the enemy");
+            }
+            //checks to see if player won
+            if (playerHealth<=0){
+                System.out.println("You army has been destroyed, Michael takes you prisoner to perform experiments on you.");
+                battleOver = true;
+            }
+            else if (enemyNumbers<=0){
+                System.out.println("You have successfully destroyed the enemy! You have made the galaxy free once again!");
+                battleOver = true;
+            }
+            takenCover = false;
+        }
+        endGame();
+    }
+
+    private static void endGame(){
+        System.out.println("How would you like to view your progress? Forwards or reverse?");
+        System.out.println("type forward or reverse");
+        getCommand();
+        boolean allowedInput = false;
+        while (!allowedInput){
+            if(command.equalsIgnoreCase("forward")){
+                allowedInput = true;
+                printNavigationForward();
+            }
+            else if(command.equalsIgnoreCase("reverse")){
+                allowedInput = true;
+                printNavigationReverse();
+            }
+            else{
+                System.out.println("Unrecognized command, type forward or reverse");
+                getCommand();
+            }
+        }
+        double achievementRatio;
+        achievementRatio = score/moves;
+        achievementRatio = (double)Math.round(achievementRatio * 100) / 100;
+        System.out.print("[Final progress: " + moves + " moves, score: " + score + ", achievement ratio: " + achievementRatio + ", coins: " + coins + ", power: " + totalPower + "] ");
+        System.out.println();
+        System.out.print("Items in inventory: ");
+        showInventory();
+        System.out.println("When you are done viewing your progress, type quit to end the game");
+        getCommand();
+        while(!command.equalsIgnoreCase("quit")){
+            System.out.println("Game is over, type quit to exit");
+            getCommand();
+        }
+        quit();
+    }
+
     private static void printNavigationReverse(){
         String navPrint = "";
         int input;
@@ -1454,7 +1547,8 @@ public class Game {
                 // Construct a new list item and set its attributes.
                 ListItem fileItem = new ListItem();
                 fileItem.setName(itemName);
-                fileItem.setCost(Math.random() * 100);
+                fileItem.setCost(Math.round(Math.random() * 100));
+                fileItem.setPower((int) (fileItem.getCost()) / 2);
                 fileItem.setNext(null); // Still redundant. Still safe.
 
                 // Add the newly constructed item to the array.
