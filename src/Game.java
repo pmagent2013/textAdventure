@@ -27,7 +27,6 @@ public class Game {
     public static int coins = 100;                  // keeps track of coins used to buy items in magick shoppe
     public static int cheaterCounter = 0;           //used in case the player decides to mine for coins for too long
     public static int guessCounter = 5;             //ued to keep track of guesses for password
-    //public static MagicItemsList magicItems  = new MagicItemsList();
     public static ListItem[] magicItemsArray = new ListItem[666];
     public static LocaleList localeList  = new LocaleList();
     public static Stack navStack = new Stack();
@@ -283,7 +282,6 @@ public class Game {
 
         loc11.setGoToMidway(loc10);
 
-
         localeList.add(loc0);
         localeList.add(loc1);
         localeList.add(loc2);
@@ -297,7 +295,6 @@ public class Game {
         localeList.add(loc10);
         localeList.add(loc11);
         localeList.setCurrent(loc4);
-
 
     }
 
@@ -852,13 +849,17 @@ public class Game {
             System.out.println("You see Teyla is the distance, you walk over grab her, before you can kiss her she flips you on your back and kicks you in the groin.");
         }
         else if(currentLocale == 3){
-            System.out.println("You walk over to Carter's desk. Spin her around, and lean in to kiss her, suddenly Teyla walks into the office. As you turn to walk out Carter turns and says \"wait, let\'s have some fun.\" ");
-            System.out.println("Teyla locks the door and Carter and her ask you if you want to have some fun.");
-            System.out.println("Do you?");
+            System.out.println("You walk over to Carter's desk. Spin her around, and lean in to kiss her, suddenly Teyla and Dr. Keller walks into the office. ");
+            System.out.println("Keller Says, \"Major Young we've been waiting for you to come to Atlantis for quite some time.\"");
+            System.out.println("\"Major you are in for the time of your life\" says Teyla");
+            System.out.println("You turn around and see that Carter has stripped down, as your jaw drops Keller grabs your shoulder. You turn and see that her and Teyla have stripped as well.");
+            System.out.println("Carter pushes you into a chair and Keller climbs on top of you.");
+            System.out.println("Teyla locks the door and Carter asks you if your ready to have some fun.");
+            System.out.println("Are you?");
             getCommand();
             while(!acceptableInput){
                 if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
-                    System.out.println("Carter and Teyla strip down and you have a three-way with them. You lucky son of a bitch. "); //I felt weird typing this
+                    System.out.println("you have a four-way with them. You lucky son of a bitch. "); //I felt weird typing this
                     acceptableInput = true;
                 }
                 else {
@@ -1519,32 +1520,6 @@ public class Game {
             catch (Exception ex) {
                 System.out.println("Caught exception: " + ex.getMessage());
             }
-        }
-    }
-
-    private static void readMagicItemsFromFile(String fileName,
-                                               MagicItemsList lm) {
-        File myFile = new File(fileName);
-        try {
-            Scanner input = new Scanner(myFile);
-            while (input.hasNext()) {
-                // Read a line from the file.
-                String itemName = input.nextLine();
-
-                // Construct a new list item and set its attributes.
-                ListItem fileItem = new ListItem();
-                fileItem.setName(itemName);
-                fileItem.setCost(Math.round(Math.random() * 100));
-                fileItem.setPower((int)(fileItem.getCost())/2);
-                fileItem.setNext(null); // Still redundant. Still safe.
-
-                // Add the newly constructed item to the list.
-                lm.add(fileItem);
-            }
-            // Close the file.
-            input.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("File not found. " + ex.toString());
         }
     }
 

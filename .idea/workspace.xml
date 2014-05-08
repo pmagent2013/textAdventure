@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/Game.java" line="1236" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/src/Game.java" line="1237" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a16d35c-9691-4cd6-9bb9-762a99b1aacd" name="Default" comment="" />
@@ -72,7 +72,7 @@
       <file leaf-file-name="Game.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="0" selection-start="3451" selection-end="3451" vertical-scroll-proportion="0.7558923" vertical-offset="486" max-vertical-offset="29631">
+            <state line="835" column="32" selection-start="38479" selection-end="38479" vertical-scroll-proportion="0.30471382" vertical-offset="14014" max-vertical-offset="29206">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -886,7 +886,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="3451" selection-end="3451" vertical-scroll-proportion="0.7558923" vertical-offset="486" max-vertical-offset="29631">
+        <state line="835" column="32" selection-start="38479" selection-end="38479" vertical-scroll-proportion="0.30471382" vertical-offset="14014" max-vertical-offset="29206">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
