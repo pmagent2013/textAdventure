@@ -847,11 +847,26 @@ public class Game {
 
     //allows the player to attempt to kiss various characters
     private static void kiss() {
+        boolean acceptableInput = false;
         if(currentLocale == 2){
             System.out.println("You see Teyla is the distance, you walk over grab her, before you can kiss her she flips you on your back and kicks you in the groin.");
         }
         else if(currentLocale == 3){
-            System.out.println("You walk over to Carter's desk. Spin her around, and lean in to kiss her.... Hey dream boy, Wake Up!");
+            System.out.println("You walk over to Carter's desk. Spin her around, and lean in to kiss her, suddenly Teyla walks into the office. As you turn to walk out Carter turns and says \"wait, let\'s have some fun.\" ");
+            System.out.println("Teyla locks the door and Carter and her ask you if you want to have some fun.");
+            System.out.println("Do you?");
+            getCommand();
+            while(!acceptableInput){
+                if(command.equalsIgnoreCase("yes") || command.equalsIgnoreCase("y")){
+                    System.out.println("Carter and Teyla strip down and you have a three-way with them. You lucky son of a bitch. "); //I felt weird typing this
+                    acceptableInput = true;
+                }
+                else {
+                    System.out.println("You're freakin crazy, just say yes.");
+                    getCommand();
+                }
+            }
+
         }
         else if(currentLocale == 5){
             System.out.println("You see Shepard doing target practice. You tap him on the shoulder and lean in for a kiss. He points his 9mm in your face and tells you to leave.");
